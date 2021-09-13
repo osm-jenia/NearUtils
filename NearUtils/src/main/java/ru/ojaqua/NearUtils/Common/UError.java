@@ -2,33 +2,41 @@ package ru.ojaqua.NearUtils.Common;
 
 public class UError extends RuntimeException {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5991061252440201934L;
-
-	public UError() {
-		// TODO Auto-generated constructor stub
-	}
+	
+	private String addInfoForTrace = "";
+	
 
 	public UError(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 	public UError(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public UError(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
-	public UError(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
+	public UError(String message, String addInfoForTrace) {
+		super(message);
+		this.addInfoForTrace = addInfoForTrace;
 	}
+
+	public UError(Throwable cause, String addInfoForTrace) {
+		super(cause);
+		this.addInfoForTrace = addInfoForTrace;
+	}
+
+	public UError(String message, Throwable cause, String addInfoForTrace) {
+		super(message, cause);
+		this.addInfoForTrace = addInfoForTrace;
+	}
+	
+	public String getAddInfoForTrace() {
+		return addInfoForTrace; 
+	}
+	
 
 }
