@@ -28,7 +28,7 @@ public class QueryGetter implements Runnable {
 	Consumer<String> consumer;
 	static final int UNDEF_POS = -1;
 
-	static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME), value: \\S+\\s";
+	static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
 	static final String endQueryPatternStr = "^Result=\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
@@ -221,9 +221,11 @@ public class QueryGetter implements Runnable {
 					queryWithVar.append(c);
 				} else if (c == '?') {
 					if (vars.size() <= i)
-						throw new UError("Количество переменых в массиве " + vars.size()
-								+ ", а в запросе уже пытаемся подставить " + i + ". Массив значаений: "
-								+ vars.toString());
+						throw new UError("Количество переменых в массиве " + vars.size() + ", а в запросе уже пытаемся подставить элемент" + i , 
+								          "Запрос без параметров: " + query  + "\n" + 
+								          "Запрос с подстановкой: " + queryWithVar.toString() + "\n"+
+								          "Массив значаений: " + vars.toString()
+								        );
 
 					queryWithVar.append(getValueStr(vars.get(i)));
 					++i;
@@ -231,9 +233,11 @@ public class QueryGetter implements Runnable {
 					state = State.VAR;
 
 					if (vars.size() <= i)
-						throw new UError("Количество переменых в массиве " + vars.size()
-								+ ", а в запросе уже пытаемся подставить " + i + ". Массив значаений: "
-								+ vars.toString());
+						throw new UError("Количество переменых в массиве " + vars.size() + ", а в запросе уже пытаемся подставить элемент" + i , 
+						          "Запрос без параметров: " + query  + "\n" + 
+						          "Запрос с подстановкой: " + queryWithVar.toString() + "\n"+
+						          "Массив значаений: " + vars.toString()
+						        );
 
 					queryWithVar.append(getValueStr(vars.get(i)));
 					++i;
@@ -279,7 +283,7 @@ public class QueryGetter implements Runnable {
 		Matcher valueMatcher = valuePattern.matcher(varFromTrace);
 
 		String type = null;
-		String value = null;
+		String value = "";
 
 		if (typeMatcher.find())
 			type = typeMatcher.group();
@@ -291,8 +295,8 @@ public class QueryGetter implements Runnable {
 
 		if (type != null && value != null) {
 			resultValue = switch (type) {
-			case "RSDSHORT", "RSDLONG" -> value.substring(7);
-			case "RSDLPSTR" -> "'" + value.substring(7) + "'";
+			case "RSDSHORT", "RSDLONG", "RSDPT_NUMERIC" -> value.substring(7);
+			case "RSDLPSTR" -> "".equals(value) ? "chr(1)" : "'" + value.substring(7) + "'";
 			case "RSDCHAR" -> "chr(" + value.substring(7) + ")";
 			case "RSDDATE" -> "to_date('" + (value.substring(7).equals("0.0.0") ? "1.1.1" : value.substring(7))
 					+ "', 'dd.mm.yyyy')";
