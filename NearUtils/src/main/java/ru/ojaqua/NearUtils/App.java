@@ -83,7 +83,7 @@ public class App
             	var systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
             	
             	//JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_WIN, 'A');
-            	JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, 'B');
+            	JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
             	JIntellitype.getInstance().addHotKeyListener(aIdentifier->{if(aIdentifier == WINDOWS_A)
             		                                                         menu.show();
             		                                                        
