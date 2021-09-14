@@ -263,6 +263,24 @@ public class QueryGetterTest {
 
 	}
 	
+	@Test
+	public void get_space_position_center_with_param_start_space() throws IOException {
+
+		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", 
+				           "123456   #2, type RSDSHORT, value: 0      12345",
+				           "123456   12345678901234567890123456789    12345", 
+				           "123456   123456789012345678901234567890",
+				           "123456   1234567890123",
+				           "123456   Result=0                         12345",
+				           "123456   12345678901234567890             12345",
+				           
+		};
+
+		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 9);
+
+		assertEquals(endPosition, 39);
+
+	}
 	
 	
 	@Test
@@ -278,8 +296,16 @@ public class QueryGetterTest {
 		assertEquals(oueryGetter.getValueStr("#23, type RSDCHAR, value: 88 "), "chr(88)");
 		assertEquals(oueryGetter.getValueStr("#23, type RSDLPSTR, value: что-то "), "'что-то'");
 		assertEquals(oueryGetter.getValueStr("#24, type RSDVERYLONG, value: что-то "), "что-то");
+		assertEquals(oueryGetter.getValueStr("#23, type RSDLPSTR, value: "), "chr(1)");
+		assertEquals(oueryGetter.getValueStr("#39, type RSDPT_NUMERIC, value: 11.000000000000 "), "11.000000000000");
 
 	}
+	
+	
+	
+	
+	
+	
 	@Test
 	public void test() throws IOException {
 
