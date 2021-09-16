@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import ru.ojaqua.NearUtils.Common.UError;
 
-public class QueryGetter implements Runnable {
+public class QueryGetterHandler implements Runnable {
 
 	/**
 	 * состояния конечного автомата, который используется при подстановке значений в
@@ -29,10 +29,10 @@ public class QueryGetter implements Runnable {
 	static final int UNDEF_POS = -1;
 
 	static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
-	static final String endQueryPatternStr = "^Result=\\d+\\s{5}.*";
+	static final String endQueryPatternStr = "^Result=\\s\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
-	public QueryGetter(Supplier<String> supplier, Consumer<String> consumer) {
+	public QueryGetterHandler(Supplier<String> supplier, Consumer<String> consumer) {
 		this.supplier = supplier;
 		this.consumer = consumer;
 	}
@@ -150,14 +150,18 @@ public class QueryGetter implements Runnable {
 		// символам на каждой строке
 		if (lines.length > startQueryLineNumber + 1) {
 
-			Pattern startLineSpacePattern = Pattern.compile(threeSpacePatternStr);
-			Matcher startLineSpaceMatcher = startLineSpacePattern.matcher(startQueryLine.substring(startPositionInLine));
+			StringFinder strFinder = new StringFinder(startQueryLine.substring(startPositionInLine), "   ");
+			//Pattern startLineSpacePattern = Pattern.compile(threeSpacePatternStr);
+			//Matcher startLineSpaceMatcher  = startLineSpacePattern.matcher(startQueryLine.substring(startPositionInLine));
 
-			nextSpacePlace: while (startLineSpaceMatcher.find() && endPositionInLine == UNDEF_POS) {
+			nextSpacePlace: while ( endPositionInLine == UNDEF_POS ) {
 
-				startLineSpacePosition = startPositionInLine + startLineSpaceMatcher.start();
+				if(strFinder.find())
+				  startLineSpacePosition = startPositionInLine + strFinder.getCurPosition();
+				else
+				  startLineSpacePosition = UNDEF_POS; 
 
-				if (startLineSpaceMatcher.start() > 0 && startLineSpacePosition < startQueryLine.length()) {
+				if (startLineSpacePosition > 0 && startLineSpacePosition < startQueryLine.length()) {
 					for (int j = startQueryLineNumber; j < lines.length && endPositionInLine == UNDEF_POS; j++) {
 
 						

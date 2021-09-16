@@ -8,12 +8,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class SCRGetter implements Runnable {
+public class SCRGetterHandler implements Runnable {
 
 	Supplier<String> supplier;
 	Consumer<String> consumer;
 
-	public SCRGetter(Supplier<String> supplier, Consumer<String> consumer) {
+	public SCRGetterHandler(Supplier<String> supplier, Consumer<String> consumer) {
 		this.supplier = supplier;
 		this.consumer = consumer;
 	}

@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class SCRGetterTest {
+public class SCRGetterHandlerTest {
 
 	
 	@Test
 	public void empty_string() {
 
-		SCRGetter getter = new SCRGetter(() -> "", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "", (str) -> {
 			assertEquals(str, "");
 		});
 		
@@ -21,7 +21,7 @@ public class SCRGetterTest {
 	@Test
 	public void null_string() {
 
-		SCRGetter getter = new SCRGetter(() ->null, (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() ->null, (str) -> {
 			assertEquals(str, "");
 		});
 		
@@ -32,7 +32,7 @@ public class SCRGetterTest {
 	@Test
 	public void only_scr_string() {
 
-		SCRGetter getter = new SCRGetter(() -> "452202", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "452202", (str) -> {
 			assertEquals(str, "452202");
 		});
 		
@@ -43,7 +43,7 @@ public class SCRGetterTest {
 	@Test
 	public void short_number_string() {
 
-		SCRGetter getter = new SCRGetter(() -> "32302", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "32302", (str) -> {
 			assertEquals(str, "");
 		});
 		
@@ -54,7 +54,7 @@ public class SCRGetterTest {
 	@Test
 	public void right_not_numbers() {
 
-		SCRGetter getter = new SCRGetter(() -> "452202ssdal;ks;lkd", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "452202ssdal;ks;lkd", (str) -> {
 			assertEquals(str, "452202");
 		});
 		
@@ -65,7 +65,7 @@ public class SCRGetterTest {
 	@Test
 	public void right_left_not_numbers() {
 
-		SCRGetter getter = new SCRGetter(() -> "452202ssdal;ks;lkd123456", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "452202ssdal;ks;lkd123456", (str) -> {
 			assertEquals(str, "123456, 452202");
 		});
 		
@@ -76,7 +76,7 @@ public class SCRGetterTest {
 	@Test
 	public void left_not_numbers() {
 
-		SCRGetter getter = new SCRGetter(() -> "wq	qssa 452202", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "wq	qssa 452202", (str) -> {
 			assertEquals(str, "452202");
 		});
 		
@@ -87,7 +87,7 @@ public class SCRGetterTest {
 	@Test
 	public void many_numbers() {
 
-		SCRGetter getter = new SCRGetter(() -> "wq	qssa 45454452202sadqw", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "wq	qssa 45454452202sadqw", (str) -> {
 			assertEquals(str, "");
 		});
 		
@@ -98,7 +98,7 @@ public class SCRGetterTest {
 	@Test
 	public void many_scr_in_one_string() {
 
-		SCRGetter getter = new SCRGetter(() -> "wq	qssa 654321sadqw1234567c123456q	saq	", (str) -> {
+		SCRGetterHandler getter = new SCRGetterHandler(() -> "wq	qssa 654321sadqw1234567c123456q	saq	", (str) -> {
 			assertEquals(str, "123456, 654321");
 		});
 		

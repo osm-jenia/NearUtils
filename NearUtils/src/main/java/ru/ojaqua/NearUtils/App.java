@@ -13,8 +13,8 @@ import ru.ojaqua.NearUtils.Common.ClipboardWorker;
 import ru.ojaqua.NearUtils.GUI.UMenu;
 import ru.ojaqua.NearUtils.GUI.UMenuItemParam;
 import ru.ojaqua.NearUtils.GUI.USystemTray;
-import ru.ojaqua.NearUtils.Handlers.QueryGetter;
-import ru.ojaqua.NearUtils.Handlers.SCRGetter;
+import ru.ojaqua.NearUtils.Handlers.QueryGetterHandler;
+import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler;
 
 /**
  * Hello world!
@@ -66,8 +66,8 @@ public class App
             	
             	
             	List<UMenuItemParam> menuParm =
-            			List.of( UMenuItemParam.crExecuter("Получить SCR", new SCRGetter(ClipboardWorker::getText, ClipboardWorker::setText )),
-            					 UMenuItemParam.crExecuter("Получить запрос из трассы", new QueryGetter(ClipboardWorker::getText, ClipboardWorker::setText ))
+            			List.of( UMenuItemParam.crExecuter("Получить SCR", new SCRGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText )),
+            					 UMenuItemParam.crExecuter("Получить запрос из трассы", new QueryGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText ))
             					);
 //            	List.of( UMenuItemParam.crExecuter("Item1", ()->{JOptionPane.showMessageDialog(null, "clic Item1!");}),
 //            			 UMenuItemParam.crExecuter("Item2", ()->{JOptionPane.showMessageDialog(null, "clic Item2!");}),

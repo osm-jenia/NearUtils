@@ -12,11 +12,17 @@ import org.junit.Test;
 
 import ru.ojaqua.NearUtils.Common.UError;
 
-public class QueryGetterTest {
+public class QueryGetterHandlerTest {
 
 	@Test
+	public void result_regular() {
+
+		assertTrue("Result= 0                               12345".substring(0).matches("^Result=\\s\\d+\\s{5}.*"));
+	}
+	
+	@Test
 	public void empty_string() {
-		QueryGetter getter = new QueryGetter(() -> "", (str) -> {
+		QueryGetterHandler getter = new QueryGetterHandler(() -> "", (str) -> {
 			assertEquals(str, "");
 		});
 
@@ -26,7 +32,7 @@ public class QueryGetterTest {
 	@Test
 	public void null_string() {
 
-		QueryGetter getter = new QueryGetter(() -> null, (str) -> {
+		QueryGetterHandler getter = new QueryGetterHandler(() -> null, (str) -> {
 			assertEquals(str, "");
 		});
 
@@ -42,7 +48,7 @@ public class QueryGetterTest {
 		String strQuery;
 		strQuery = new String(Files.readAllBytes(path));
 
-		QueryGetter getter = new QueryGetter(() -> strQuery, (outString) -> {
+		QueryGetterHandler getter = new QueryGetterHandler(() -> strQuery, (outString) -> {
 			Path outFilePath = Paths.get("src/test/resource/QueryGetterTest/outTrace.txt");
 
 			if (Files.exists(outFilePath)) {
@@ -65,59 +71,59 @@ public class QueryGetterTest {
 	}
 
 	@Test
-	public void get_space_position_without_result_center() throws IOException {
+	public void get_space_position_without_result_center() {
 
 		String[] lines = { "123456   12345678901234567890   12345", 
 				           "123456   12345678901234567890",
 				           "123456   1234567890123", };
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 9);
 
 		assertEquals(endPosition, 29);
 
 	}
 
 	@Test
-	public void get_space_position_without_result_left() throws IOException {
+	public void get_space_position_without_result_left() {
 
 		String[] lines = { "12345678901234567890   12345", 
 				           "12345678901234567890",
 				           "12345678901234", };
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 0);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
 		assertEquals(endPosition, 20);
 
 	}
 
 	@Test
-	public void get_space_position_without_result_right() throws IOException {
+	public void get_space_position_without_result_right() {
 
 		String[] lines = { "123456   12345678901234567890", 
 				           "123456   12345678901234567890",
 				           "123456   1234567890123", };
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 10);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 10);
 
-		assertEquals(endPosition, 29);
+		assertEquals( 29, endPosition );
 
 	}
 
 	@Test
-	public void get_space_position_without_result_alone() throws IOException {
+	public void get_space_position_without_result_alone() {
 
 		String[] lines = { "12345678901234567890", 
 				           "12345678901234567890",
 				           "1234567890123", };
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 0);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
-		assertEquals(endPosition, 20);
+		assertEquals(20, endPosition);
 
 	}
 
 	@Test
-	public void get_space_position_center() throws IOException {
+	public void get_space_position_center() {
 
 		String[] lines = { "123456   12345678901234567890   12345", 
 				           "123456   12345678901234567890",
@@ -127,14 +133,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 9);
 
 		assertEquals(endPosition, 29);
 
 	}
 
 	@Test
-	public void get_space_position_left() throws IOException {
+	public void get_space_position_left() {
 
 		String[] lines = { "12345678901234567890   12345", 
 				           "12345678901234567890",
@@ -144,14 +150,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 0);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
 		assertEquals(endPosition, 20);
 
 	}
 
 	@Test
-	public void get_space_position_right() throws IOException {
+	public void get_space_position_right() {
 
 		String[] lines = { "123456   12345678901234567890", 
 				           "123456   12345678901234567890",
@@ -161,14 +167,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 10);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 10);
 
 		assertEquals(endPosition, 29);
 
 	}
 
 	@Test
-	public void get_space_position_alone() throws IOException {
+	public void get_space_position_alone() {
 
 		String[] lines = { "12345678901234567890", 
 				           "12345678901234567890",
@@ -178,15 +184,15 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 0, 0);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
-		assertEquals(endPosition, 20);
+		assertEquals( 20, endPosition );
 
 	}
 	
 	
 	@Test
-	public void get_space_position_center_with_param() throws IOException {
+	public void get_space_position_center_with_param() {
 
 		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", 
 				           "123456   #2, type RSDSHORT, value: 0      12345",
@@ -198,14 +204,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
 		assertEquals(endPosition, 39);
 
 	}
 	
 	@Test
-	public void get_space_position_left_with_param() throws IOException {
+	public void get_space_position_left_with_param() {
 
 		String[] lines = { "#1, type RSDSHORT, value: 0      12345", 
 				           "#2, type RSDSHORT, value: 0      12345",
@@ -217,14 +223,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
 		assertEquals(endPosition, 30);
 
 	}
 
 	@Test
-	public void get_space_position_rght_with_param() throws IOException {
+	public void get_space_position_rght_with_param() {
 
 		String[] lines = { 
 				   "123456   #1, type RSDSHORT, value: 0", 
@@ -237,7 +243,7 @@ public class QueryGetterTest {
 		           
         };
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
 		assertEquals(endPosition, 39);
 
@@ -245,7 +251,7 @@ public class QueryGetterTest {
 	
 
 	@Test
-	public void get_space_shaffle_position_left_with_param() throws IOException {
+	public void get_space_shaffle_position_left_with_param() {
 
 		String[] lines = { "#1, type RSDSHORT, value: 0            12345", 
 				           "#2, type RSDSHORT, value: 0            12345",
@@ -257,14 +263,14 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 0);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 0);
 
 		assertEquals(endPosition, 36);
 
 	}
 	
 	@Test
-	public void get_space_position_center_with_param_start_space() throws IOException {
+	public void get_space_position_center_with_param_start_space() {
 
 		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", 
 				           "123456   #2, type RSDSHORT, value: 0      12345",
@@ -276,7 +282,7 @@ public class QueryGetterTest {
 				           
 		};
 
-		int endPosition = new QueryGetter(null, null).getEndPositionInLine(lines, 2, 9);
+		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
 		assertEquals(endPosition, 39);
 
@@ -284,9 +290,9 @@ public class QueryGetterTest {
 	
 	
 	@Test
-	public void get_value_str_for_query() throws IOException {
+	public void get_value_str_for_query() {
 
-		QueryGetter oueryGetter = new QueryGetter(null, null);
+		QueryGetterHandler oueryGetter = new QueryGetterHandler(null, null);
 		assertEquals(oueryGetter.getValueStr("#1, type RSDSHORT, value: 0 "), "0");
 		assertEquals(oueryGetter.getValueStr("#3, type RSDDATE, value: 0.0.0 "), "to_date('1.1.1', 'dd.mm.yyyy')");
 		assertEquals(oueryGetter.getValueStr("#4, type RSDDATE, value: 31.12.9999 "), "to_date('31.12.9999', 'dd.mm.yyyy')");
@@ -301,15 +307,35 @@ public class QueryGetterTest {
 
 	}
 	
-	
-	
-	
+	@Test
+	public void full_query_position_center_with_param() {
+
+		String lines =  "123456   KeyFind: using search SQL        12345\n"+
+				        "123456   #1, type RSDSHORT, value: 0      12345\n"+
+				        "123456   #2, type RSDSHORT, value: 0      12345\n"+
+				        "123456   123456789012_?_678901234567e     12345\n"+ 
+				        "123456   123456789012_?_67890123456789e\n" +
+				        "123456   1234567890123e\n" +
+				        "123456   Result= 0                        12345\n";
+
+		new QueryGetterHandler(()->lines, (str)->{
+			assertEquals("123456789012_0_678901234567e  123456789012_0_67890123456789e1234567890123e", str);
+		}).run();
+	}
 	
 	
 	@Test
-	public void test() throws IOException {
+	public void full_packege_position_center_with_param() {
 
-		assertTrue("Result=0                               12345".substring(0).matches("^Result=\\d+\\s{5}.*"));
+		String lines =  "123456   KeyFind: using search SQL                               12345\n"+
+				        "123456   #1, type RSDSHORT, value: 0                             12345\n"+
+				        "123456   #2, type RSDSHORT, value: 0                             12345\n"+
+				        "123456   BEGIN ? := RSB_Common.RSI_GetRegValueParam(?); END;     12345\n"+ 
+				        "123456   Result= 0                                               12345\n";
+
+		new QueryGetterHandler(()->lines, (str)->{
+			assertEquals("BEGIN 0 := RSB_Common.RSI_GetRegValueParam(0); END;", str);
+		}).run();
 	}
 	
 	
