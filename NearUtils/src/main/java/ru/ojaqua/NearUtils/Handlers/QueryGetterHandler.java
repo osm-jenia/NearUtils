@@ -21,14 +21,29 @@ public class QueryGetterHandler implements Runnable {
 	enum State {
 		QUERY, // Запрос
 		STRING, // Строка запроса
-		VAR // Переменная
+		COLON, // Двоеточие
+		COLON_VAR // Параметр с двоеточием
+	};
+
+	/**
+	 * виды подстоновок в запрос
+	 * 
+	 * @author Aqua
+	 *
+	 */
+	enum VarTypeQuery {
+		UNDEF, // неопределено
+		COLON_WORD, // параметр с двоеточием
+		QUESTION_MARK // вопросительный знак
 	};
 
 	Supplier<String> supplier;
 	Consumer<String> consumer;
 	static final int UNDEF_POS = -1;
 
-	static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
+	//static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
+	static final String varPatternStr = "#\\d+, type RSD\\w+, value: \\S*\\s";
+	
 	static final String endQueryPatternStr = "^Result=\\s\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
@@ -151,20 +166,20 @@ public class QueryGetterHandler implements Runnable {
 		if (lines.length > startQueryLineNumber + 1) {
 
 			StringFinder strFinder = new StringFinder(startQueryLine.substring(startPositionInLine), "   ");
-			//Pattern startLineSpacePattern = Pattern.compile(threeSpacePatternStr);
-			//Matcher startLineSpaceMatcher  = startLineSpacePattern.matcher(startQueryLine.substring(startPositionInLine));
+			// Pattern startLineSpacePattern = Pattern.compile(threeSpacePatternStr);
+			// Matcher startLineSpaceMatcher =
+			// startLineSpacePattern.matcher(startQueryLine.substring(startPositionInLine));
 
-			nextSpacePlace: while ( endPositionInLine == UNDEF_POS ) {
+			nextSpacePlace: while (endPositionInLine == UNDEF_POS) {
 
-				if(strFinder.find())
-				  startLineSpacePosition = startPositionInLine + strFinder.getCurPosition();
+				if (strFinder.find())
+					startLineSpacePosition = startPositionInLine + strFinder.getCurPosition();
 				else
-				  startLineSpacePosition = UNDEF_POS; 
+					startLineSpacePosition = UNDEF_POS;
 
 				if (startLineSpacePosition > 0 && startLineSpacePosition < startQueryLine.length()) {
 					for (int j = startQueryLineNumber; j < lines.length && endPositionInLine == UNDEF_POS; j++) {
 
-						
 						// Если дошли до Result, то приехали в конец
 						if (lines[j].substring(startPositionInLine).matches(endQueryPatternStr)) {
 
@@ -173,23 +188,24 @@ public class QueryGetterHandler implements Runnable {
 
 							endPositionInLine = startLineSpacePosition;
 							break nextSpacePlace;
-						// Если мы находимся на последней строке	
-						} else if( j == lines.length - 1) {
+							// Если мы находимся на последней строке
+						} else if (j == lines.length - 1) {
 							endPositionInLine = startLineSpacePosition;
 							break nextSpacePlace;
-						// Если длинна текущей строки меньше, чем позиция трех пробелов, то считаем, что все норм
-					    // Следующий должен быть Result по идее
-						} else if( startLineSpacePosition > lines[j].length() ) {
-							
+							// Если длинна текущей строки меньше, чем позиция трех пробелов, то считаем, что
+							// все норм
+							// Следующий должен быть Result по идее
+							// Если длинна текущей строки равна, то норм
+						} else if (j == startQueryLineNumber || lines[j].length() <= startLineSpacePosition ) {
+
 							continue;
-						
-						// Если на той же позиции нашли три пробела или окончание строки
-						// Все норм
-						} else if( lines[j].substring(startLineSpacePosition).matches("(^\\s{3}.+$)|$") ) {
-							
-							continue;
-						}
-						else
+
+							// Если на той же позиции нашли три пробела или окончание строки
+							// Все норм
+//						} else if ( lines[j].length() == startLineSpacePosition  )/*[j].substring(startLineSpacePosition).matches("(^\\s{3}.+$)|$"))*/ {
+//
+//							continue;
+						} else
 							continue nextSpacePlace;
 					}
 				}
@@ -214,6 +230,7 @@ public class QueryGetterHandler implements Runnable {
 	 */
 	protected String getQueryWithValues(String query, List<String> vars) {
 
+		VarTypeQuery varTypeQuery = VarTypeQuery.UNDEF;
 		State state = State.QUERY;
 		StringBuilder queryWithVar = new StringBuilder();
 		int i = 0;
@@ -223,28 +240,22 @@ public class QueryGetterHandler implements Runnable {
 				if (c == '\'') {
 					state = State.STRING;
 					queryWithVar.append(c);
-				} else if (c == '?') {
+				} else if (c == '?' && (varTypeQuery.equals(VarTypeQuery.UNDEF)
+						|| varTypeQuery.equals(VarTypeQuery.QUESTION_MARK))) {
 					if (vars.size() <= i)
-						throw new UError("Количество переменых в массиве " + vars.size() + ", а в запросе уже пытаемся подставить элемент" + i , 
-								          "Запрос без параметров: " + query  + "\n" + 
-								          "Запрос с подстановкой: " + queryWithVar.toString() + "\n"+
-								          "Массив значаений: " + vars.toString()
-								        );
+						throw new UError(
+								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
+								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: "
+										+ query + "\n" + "Запрос с подстановкой: " + queryWithVar.toString() + "\n"
+										+ "Массив значаений: " + vars.toString() + "\n" + "Тип строки подстоновки: "
+										+ varTypeQuery.toString());
 
 					queryWithVar.append(getValueStr(vars.get(i)));
 					++i;
-				} else if (c == ':') {
-					state = State.VAR;
-
-					if (vars.size() <= i)
-						throw new UError("Количество переменых в массиве " + vars.size() + ", а в запросе уже пытаемся подставить элемент" + i , 
-						          "Запрос без параметров: " + query  + "\n" + 
-						          "Запрос с подстановкой: " + queryWithVar.toString() + "\n"+
-						          "Массив значаений: " + vars.toString()
-						        );
-
-					queryWithVar.append(getValueStr(vars.get(i)));
-					++i;
+					varTypeQuery = VarTypeQuery.QUESTION_MARK;
+				} else if (c == ':'
+						&& (varTypeQuery.equals(VarTypeQuery.UNDEF) || varTypeQuery.equals(VarTypeQuery.COLON_WORD))) {
+					state = State.COLON;
 				} else
 					queryWithVar.append(c);
 
@@ -258,7 +269,26 @@ public class QueryGetterHandler implements Runnable {
 				}
 
 			}
-			case VAR -> {
+			case COLON -> {
+				if (c == '=') {
+					state = State.QUERY;
+					queryWithVar.append(":=");
+				} else if (Character.isLetterOrDigit(c) || c == '_') {
+					state = State.COLON_VAR;
+					if (vars.size() <= i)
+						throw new UError(
+								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
+								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: "
+										+ query + "\n" + "Запрос с подстановкой: " + queryWithVar.toString() + "\n"
+										+ "Массив значаений: " + vars.toString() + "\n" + "Тип строки подстоновки: "
+										+ varTypeQuery.toString());
+
+					queryWithVar.append(getValueStr(vars.get(i)));
+					++i;
+					varTypeQuery = VarTypeQuery.COLON_WORD;
+				}
+			}
+			case COLON_VAR -> {
 				if (!Character.isLetterOrDigit(c) && c != '_') {
 					state = State.QUERY;
 					queryWithVar.append(c);
