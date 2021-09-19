@@ -21,7 +21,7 @@ import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler;
  *
  */
 public class NearUtilsApp {
-	private static final int WINDOWS_A = 88;
+	private static final int SHIFT_ALT_3 = 88;
 	private static final String nameProgram = "Near utils";
 
 	static void prepareProgram() {
@@ -78,9 +78,9 @@ public class NearUtilsApp {
 
 				// JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_WIN,
 				// 'A');
-				JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
+				JIntellitype.getInstance().registerHotKey(SHIFT_ALT_3, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
 				JIntellitype.getInstance().addHotKeyListener(aIdentifier -> {
-					if (aIdentifier == WINDOWS_A)
+					if (aIdentifier == SHIFT_ALT_3)
 						menu.show();
 
 				});
