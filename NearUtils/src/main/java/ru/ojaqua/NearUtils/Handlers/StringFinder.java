@@ -14,22 +14,21 @@ public class StringFinder {
 
 	public boolean find() {
 
-		
 		for (int i = curPosition + 1; i < string.length; ++i) {
-			
+
 			boolean isFound = true;
-			for(int j = 0; j < inStr.length; ++j ) {
-				
-				if(i+j >= string.length || inStr[j] != string[i+j])
+			for (int j = 0; j < inStr.length; ++j) {
+
+				if (i + j >= string.length || inStr[j] != string[i + j])
 					isFound = false;
 			}
-			
-			if(isFound) {
+
+			if (isFound) {
 				curPosition = i;
 				return true;
 			}
 		}
-		
+
 		curPosition = string.length;
 
 		return false;

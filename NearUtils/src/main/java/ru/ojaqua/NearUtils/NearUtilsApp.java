@@ -3,7 +3,7 @@ package ru.ojaqua.NearUtils;
 import java.awt.SystemTray;
 import java.util.List;
 
-//import javax.swing.JOptionPane;
+//import javax.swing.JOptionPane; 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -20,17 +20,14 @@ import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler;
  * Hello world!
  *
  */
-public class App
-{
+public class NearUtilsApp {
 	private static final int WINDOWS_A = 88;
 	private static final String nameProgram = "Near utils";
-	
-	
-    static void prepareProgram() {
-    	try {
+
+	static void prepareProgram() {
+		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -46,30 +43,27 @@ public class App
 		if (!JIntellitype.isJIntellitypeSupported()) {
 			System.exit(1);
 		}
-    	
+
 		// Check the SystemTray support
 		if (!SystemTray.isSupported()) {
 			System.out.println("SystemTray is not supported");
 			return;
 		}
-    	
-    }
-    
-	
-	public static void main( String[] args )
-    {
-	    prepareProgram();
-	    
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-            	
-            	
-            	
-            	List<UMenuItemParam> menuParm =
-            			List.of( UMenuItemParam.crExecuter("Получить SCR", new SCRGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText )),
-            					 UMenuItemParam.crExecuter("Получить запрос из трассы", new QueryGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText ))
-            					);
-//            	List.of( UMenuItemParam.crExecuter("Item1", ()->{JOptionPane.showMessageDialog(null, "clic Item1!");}),
+
+	}
+
+	public static void main(String[] args) {
+		prepareProgram();
+
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+
+				List<UMenuItemParam> menuParm = List.of(
+						UMenuItemParam.crExecuter("Получить номера запросов",
+								new SCRGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)),
+						UMenuItemParam.crExecuter("Получить запрос из трассы",
+								new QueryGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)));
+//            	List.of( UMenuItemParam.crExecuter("Item1",  ()->{JOptionPane.showMessageDialog(null, "clic Item1!");}),
 //            			 UMenuItemParam.crExecuter("Item2", ()->{JOptionPane.showMessageDialog(null, "clic Item2!");}),
 //            			 UMenuItemParam.crSubMenu("subMenu   >", List.of(UMenuItemParam.crExecuter("Item3", ()->{JOptionPane.showMessageDialog(null, "clic Item3!");}),
 //            					                                     UMenuItemParam.crExecuter("Item4", ()->{JOptionPane.showMessageDialog(null, "clic Item4!");})
@@ -77,21 +71,22 @@ public class App
 //            		                             )
 //            			
 //            			);
-            	
-            	UMenu menu = new UMenu(menuParm, nameProgram);
-            	
-            	var systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
-            	
-            	//JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_WIN, 'A');
-            	JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
-            	JIntellitype.getInstance().addHotKeyListener(aIdentifier->{if(aIdentifier == WINDOWS_A)
-            		                                                         menu.show();
-            		                                                        
-            		                                                        });
-            	
-            }
-        });
-    }
-    
-    
+
+				UMenu menu = new UMenu(menuParm, nameProgram);
+
+				var systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
+
+				// JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_WIN,
+				// 'A');
+				JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
+				JIntellitype.getInstance().addHotKeyListener(aIdentifier -> {
+					if (aIdentifier == WINDOWS_A)
+						menu.show();
+
+				});
+
+			}
+		});
+	}
+
 }

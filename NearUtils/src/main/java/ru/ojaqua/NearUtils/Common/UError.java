@@ -3,9 +3,8 @@ package ru.ojaqua.NearUtils.Common;
 public class UError extends RuntimeException {
 
 	private static final long serialVersionUID = -5991061252440201934L;
-	
+
 	private String addInfoForTrace = "";
-	
 
 	public UError(String message) {
 		super(message);
@@ -33,10 +32,9 @@ public class UError extends RuntimeException {
 		super(message, cause);
 		this.addInfoForTrace = addInfoForTrace;
 	}
-	
+
 	public String getAddInfoForTrace() {
-		return addInfoForTrace; 
+		return addInfoForTrace;
 	}
-	
 
 }

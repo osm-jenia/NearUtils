@@ -23,19 +23,19 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	private void exceptionHundler( Exception ex ) {
-		
+	private void exceptionHundler(Exception ex) {
+
 		System.err.println(java.time.LocalDateTime.now());
-		
-		if( ex instanceof UError ) {
-			System.err.println(((UError)ex).getAddInfoForTrace());
+
+		if (ex instanceof UError) {
+			System.err.println(((UError) ex).getAddInfoForTrace());
 		}
-		
+
 		ex.printStackTrace();
-		
-		JOptionPane.showMessageDialog( null, ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE );
+
+		JOptionPane.showMessageDialog(null, ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
@@ -56,11 +56,11 @@ public class UMenu {
 					if (item.getType() == UMenuItemType.Executer) {
 
 						try {
-							
+
 							item.getExecuter().run();
-							
+
 						} catch (Exception ex) {
-							exceptionHundler( ex );
+							exceptionHundler(ex);
 						}
 
 						frame.setVisible(false);
@@ -102,11 +102,11 @@ public class UMenu {
 						if (item.getType() == UMenuItemType.Executer) {
 
 							try {
-								
+
 								item.getExecuter().run();
-								
+
 							} catch (Exception ex) {
-								exceptionHundler( ex );
+								exceptionHundler(ex);
 							}
 
 							frame.setVisible(false);
@@ -126,7 +126,7 @@ public class UMenu {
 		int sizeWidth = 400;
 		int sizeHeight = menuItems.size() * 50;
 		frame.setSize(sizeWidth, sizeHeight);
-		
+
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int locationX = (screenSize.width - sizeWidth) / 2;
 		int locationY = (screenSize.height - sizeHeight) / 2;

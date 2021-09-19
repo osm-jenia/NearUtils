@@ -41,9 +41,10 @@ public class QueryGetterHandler implements Runnable {
 	Consumer<String> consumer;
 	static final int UNDEF_POS = -1;
 
-	//static final String varPatternStr = "#\\d+, type RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
+	// static final String varPatternStr = "#\\d+, type
+	// RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
 	static final String varPatternStr = "#\\d+, type RSD\\w+, value: \\S*\\s";
-	
+
 	static final String endQueryPatternStr = "^Result=\\s\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
@@ -196,7 +197,7 @@ public class QueryGetterHandler implements Runnable {
 							// все норм
 							// Следующий должен быть Result по идее
 							// Если длинна текущей строки равна, то норм
-						} else if (j == startQueryLineNumber || lines[j].length() <= startLineSpacePosition ) {
+						} else if (j == startQueryLineNumber || lines[j].length() <= startLineSpacePosition) {
 
 							continue;
 
@@ -240,21 +241,18 @@ public class QueryGetterHandler implements Runnable {
 				if (c == '\'') {
 					state = State.STRING;
 					queryWithVar.append(c);
-				} else if (c == '?' && (varTypeQuery.equals(VarTypeQuery.UNDEF)
-						|| varTypeQuery.equals(VarTypeQuery.QUESTION_MARK))) {
+				} else if (c == '?' && (varTypeQuery.equals(VarTypeQuery.UNDEF) || varTypeQuery.equals(VarTypeQuery.QUESTION_MARK))) {
 					if (vars.size() <= i)
 						throw new UError(
 								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
-								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: "
-										+ query + "\n" + "Запрос с подстановкой: " + queryWithVar.toString() + "\n"
-										+ "Массив значаений: " + vars.toString() + "\n" + "Тип строки подстоновки: "
-										+ varTypeQuery.toString());
+								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: " + query + "\n"
+										+ "Запрос с подстановкой: " + queryWithVar.toString() + "\n" + "Массив значаений: " + vars.toString() + "\n"
+										+ "Тип строки подстоновки: " + varTypeQuery.toString());
 
 					queryWithVar.append(getValueStr(vars.get(i)));
 					++i;
 					varTypeQuery = VarTypeQuery.QUESTION_MARK;
-				} else if (c == ':'
-						&& (varTypeQuery.equals(VarTypeQuery.UNDEF) || varTypeQuery.equals(VarTypeQuery.COLON_WORD))) {
+				} else if (c == ':' && (varTypeQuery.equals(VarTypeQuery.UNDEF) || varTypeQuery.equals(VarTypeQuery.COLON_WORD))) {
 					state = State.COLON;
 				} else
 					queryWithVar.append(c);
@@ -278,10 +276,9 @@ public class QueryGetterHandler implements Runnable {
 					if (vars.size() <= i)
 						throw new UError(
 								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
-								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: "
-										+ query + "\n" + "Запрос с подстановкой: " + queryWithVar.toString() + "\n"
-										+ "Массив значаений: " + vars.toString() + "\n" + "Тип строки подстоновки: "
-										+ varTypeQuery.toString());
+								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: " + query + "\n"
+										+ "Запрос с подстановкой: " + queryWithVar.toString() + "\n" + "Массив значаений: " + vars.toString() + "\n"
+										+ "Тип строки подстоновки: " + varTypeQuery.toString());
 
 					queryWithVar.append(getValueStr(vars.get(i)));
 					++i;
@@ -332,8 +329,7 @@ public class QueryGetterHandler implements Runnable {
 			case "RSDSHORT", "RSDLONG", "RSDPT_NUMERIC" -> value.substring(7);
 			case "RSDLPSTR" -> "".equals(value) ? "chr(1)" : "'" + value.substring(7) + "'";
 			case "RSDCHAR" -> "chr(" + value.substring(7) + ")";
-			case "RSDDATE" -> "to_date('" + (value.substring(7).equals("0.0.0") ? "1.1.1" : value.substring(7))
-					+ "', 'dd.mm.yyyy')";
+			case "RSDDATE" -> "to_date('" + (value.substring(7).equals("0.0.0") ? "1.1.1" : value.substring(7)) + "', 'dd.mm.yyyy')";
 			case "RSDTIME" -> "to_date('01.01.0001 " + value.substring(7) + "', 'DD.MM.YYYY HH24:MI:SS')";
 			default -> value.substring(7);
 			};

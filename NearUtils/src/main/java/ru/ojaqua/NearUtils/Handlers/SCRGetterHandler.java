@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class SCRGetterHandler implements Runnable {
 
 	Supplier<String> supplier;
@@ -45,7 +44,7 @@ public class SCRGetterHandler implements Runnable {
 				else
 					queries.add(res);
 			}
-			
+
 			Collections.sort(queries);
 			consumer.accept(String.join(", ", queries));
 		}
