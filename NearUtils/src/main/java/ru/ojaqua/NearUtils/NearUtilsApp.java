@@ -56,6 +56,7 @@ public class NearUtilsApp {
 		prepareProgram();
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
 			public void run() {
 
 				List<UMenuItemParam> menuParm = List.of(
@@ -74,10 +75,9 @@ public class NearUtilsApp {
 
 				UMenu menu = new UMenu(menuParm, nameProgram);
 
-				var systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
+				@SuppressWarnings("unused")
+				USystemTray systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
 
-				// JIntellitype.getInstance().registerHotKey(WINDOWS_A, JIntellitype.MOD_WIN,
-				// 'A');
 				JIntellitype.getInstance().registerHotKey(SHIFT_ALT_3, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
 				JIntellitype.getInstance().addHotKeyListener(aIdentifier -> {
 					if (aIdentifier == SHIFT_ALT_3)

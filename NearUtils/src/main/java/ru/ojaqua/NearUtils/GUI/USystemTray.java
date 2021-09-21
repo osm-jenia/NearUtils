@@ -13,18 +13,16 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import ru.ojaqua.NearUtils.Common.UError;
+
 public class USystemTray {
 
 	final private TrayIcon trayIcon;
-//	final private SystemTray tray;
 
 	public USystemTray(SystemTray tray, UMenu mainMenu) {
 		trayIcon = new TrayIcon(createImage("/nearUtilsTray.png", "NearUtils"));
 
 		trayIcon.setImageAutoSize(true);
-
-//		this.tray = tray;
-//		this.mainMenu = mainMenu; 
 
 		MenuItem aboutItem = new MenuItem("About");
 		MenuItem exitItem = new MenuItem("Exit");
@@ -57,8 +55,7 @@ public class USystemTray {
 		try {
 			tray.add(trayIcon);
 		} catch (AWTException e) {
-			System.out.println("TrayIcon could not be added.");
-			return;
+			throw new UError("Возникли проблемы при добавлении иконки в трей", e);
 		}
 	}
 
@@ -66,15 +63,10 @@ public class USystemTray {
 		URL imageURL = USystemTray.class.getResource(path);
 
 		if (imageURL == null) {
-			System.err.println("Resource not found: " + path);
-			return null;
-		} else {
-			return (new ImageIcon(imageURL, description)).getImage();
+			throw new UError("Не найден ресурс: " + path);
 		}
-	}
 
-//	public TrayIcon getTrayIcon() {
-//		return trayIcon;
-//	}
+		return new ImageIcon(imageURL, description).getImage();
+	}
 
 }
