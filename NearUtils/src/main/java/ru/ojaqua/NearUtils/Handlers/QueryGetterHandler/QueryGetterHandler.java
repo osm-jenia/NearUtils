@@ -1,4 +1,4 @@
-package ru.ojaqua.NearUtils.Handlers;
+package ru.ojaqua.NearUtils.Handlers.QueryGetterHandler;
 
 import java.util.ArrayList;
 import java.util.List;

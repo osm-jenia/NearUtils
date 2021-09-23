@@ -13,28 +13,14 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 
-import ru.ojaqua.NearUtils.Common.UError;
+import ru.ojaqua.NearUtils.Common.ExceptionHundler;
 
 public class UMenu {
 	private List<JButton> buttons = new ArrayList<>();
 	private int currentFocus = 0;
 	private JFrame frame;
-
-	private void exceptionHundler(Exception ex) {
-
-		System.err.println(java.time.LocalDateTime.now());
-
-		if (ex instanceof UError) {
-			System.err.println(((UError) ex).getAddInfoForTrace());
-		}
-
-		ex.printStackTrace();
-
-		JOptionPane.showMessageDialog(null, ex.getMessage(), "Ошибка", JOptionPane.ERROR_MESSAGE);
-	}
 
 	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
 		frame = new JFrame(nameProgram);
@@ -60,7 +46,7 @@ public class UMenu {
 							item.getExecuter().run();
 
 						} catch (Exception ex) {
-							exceptionHundler(ex);
+							ExceptionHundler.exceptionHundler(ex);
 						}
 
 						frame.setVisible(false);
@@ -106,7 +92,7 @@ public class UMenu {
 								item.getExecuter().run();
 
 							} catch (Exception ex) {
-								exceptionHundler(ex);
+								ExceptionHundler.exceptionHundler(ex);
 							}
 
 							frame.setVisible(false);

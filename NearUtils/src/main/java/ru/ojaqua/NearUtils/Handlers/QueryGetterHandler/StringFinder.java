@@ -1,6 +1,6 @@
-package ru.ojaqua.NearUtils.Handlers;
+package ru.ojaqua.NearUtils.Handlers.QueryGetterHandler;
 
-public class StringFinder {
+class StringFinder {
 	private int curPosition;
 	private char[] string;
 	private char[] inStr;
