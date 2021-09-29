@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nearUtilsParam>
+	<tmplStringHandlerParam>
+		<TmplStringList>
+			<TmplString>
+				содержание 1 содержание 2 содержание 3 содержание 4
+				содержание 5
+				содержание 2
+				содержание 3
+				содержание 4
+				содержание 5
+				содержание 6
+			</TmplString>
+			<TmplString> шаблон 2</TmplString>
+			<TmplString> шаблон 3
+			</TmplString>
+		</TmplStringList>
+	</tmplStringHandlerParam>
+</nearUtilsParam>

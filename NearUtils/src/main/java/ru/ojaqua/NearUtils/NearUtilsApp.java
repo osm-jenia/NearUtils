@@ -1,10 +1,12 @@
 package ru.ojaqua.NearUtils;
 
 import java.awt.SystemTray;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//import javax.swing.JOptionPane; 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -18,8 +20,8 @@ import ru.ojaqua.NearUtils.GUI.UMenuItemParam;
 import ru.ojaqua.NearUtils.GUI.USystemTray;
 import ru.ojaqua.NearUtils.Handlers.QueryGetterHandler.QueryGetterHandler;
 import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler.SCRGetterHandler;
-import ru.ojaqua.NearUtils.Handlers.TemplStringHandler.TemplStringHandler;
-import ru.ojaqua.NearUtils.Handlers.TemplStringHandler.TemplStringPrmReader;
+import ru.ojaqua.NearUtils.Handlers.TmplStringHandler.TmplStringHandler;
+import ru.ojaqua.NearUtils.Param.NearUtilsParamReader;
 
 /**
  * Hello world!
@@ -69,12 +71,14 @@ public class NearUtilsApp {
 
 				try {
 
-					String templStringParmPath = TemplStringHandler.class.getResource("TemplStringParm.xml").getFile().substring(1);
+					URI uri = NearUtilsApp.class.getResource("/NearUtilsParam.xml").toURI();
+					Path templStringParmPath = Paths.get(uri).toAbsolutePath();
 
-					TemplStringPrmReader tmplReader = new TemplStringPrmReader(templStringParmPath);
+					NearUtilsParamReader tmplReader = new NearUtilsParamReader(templStringParmPath);
 
-					List<UMenuItemParam> tmplStringPrmList = tmplReader.getPrm().getTemplStringList().stream()
-							.map(item -> UMenuItemParam.crExecuter(item.getName(), new TemplStringHandler(item.getTempl(), ClipboardWorker::setText)))
+					List<UMenuItemParam> tmplStringPrmList = tmplReader.getPrm().getStringHandlerPrm().getTmplStringList().stream()
+							.map(str -> UMenuItemParam.crExecuter("<html>" + str.replaceAll("\n", "<br/>") + "</html>",
+									new TmplStringHandler(str, ClipboardWorker::setText)))
 							.collect(Collectors.toList());
 
 					List<UMenuItemParam> menuParm = List.of(

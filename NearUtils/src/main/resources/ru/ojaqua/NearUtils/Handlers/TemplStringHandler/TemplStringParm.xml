@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templStringPrm>
-	<PrmList>
-		<TemplString name="название 1"><templ>содержание 1</templ></TemplString>
-		<TemplString name="название 2"><templ>содержание 2</templ></TemplString>
-		<TemplString name="название 3"><templ>содержание 3</templ></TemplString>
-	</PrmList>
-</templStringPrm>

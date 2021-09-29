@@ -22,19 +22,42 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
+	private int countLines(String str) {
+		String[] lines = str.split("<br/>");
+		return lines.length;
+	}
+
 	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
 		frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		frame.setUndecorated(true);
 
+		Font font = new Font("DialogInput", Font.BOLD, 15);
+//		AffineTransform affinetransform = new AffineTransform();
+//		FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+//
+//		Graphics g;
+
+		int curWidth = 0;
+		int curHeight = 0;
+		int stringCount = 0;
+
 		for (UMenuItemParam item : menuItems) {
 
 			JButton button = new JButton(item.getItemName());
 			button.setBorderPainted(false);
-			button.setFont(new Font("DialogInput", Font.BOLD, 15));
+
+			button.setFont(font);
+			curWidth = Integer.max(button.getFontMetrics(font).stringWidth(item.getItemName()), curWidth);
+			curHeight = Integer.max(button.getFontMetrics(font).getHeight(), curHeight);
+
+			stringCount = Integer.max(stringCount, countLines(item.getItemName()));
+
 			frame.add(button);
 			buttons.add(button);
+
+//			prevSize = Integer.max((int) (font.getStringBounds(item.getItemName(), frc).getWidth()), prevSize);
 
 			button.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -109,8 +132,16 @@ public class UMenu {
 			});
 		}
 
-		int sizeWidth = 400;
-		int sizeHeight = menuItems.size() * 50;
+		// String text = "Hello World\nHello World\nHello World";
+		// Font font = new Font("Tahoma", Font.PLAIN, 12);
+		// int textwidth = (int) (font.getStringBounds(text, frc).getWidth());
+//		int textheight = (int) (font.getStringBounds(text, frc).getHeight());
+
+//		System.out.println("textwidth = " + textwidth);
+//		System.out.println("textheight = " + textheight);
+
+		int sizeWidth = curWidth + 25 * 2;// 400;
+		int sizeHeight = menuItems.size() * (curHeight * stringCount + 25 * 2);
 		frame.setSize(sizeWidth, sizeHeight);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
