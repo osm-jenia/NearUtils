@@ -22,11 +22,10 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	private int countLines(String str) {
-		String[] lines = str.split("<br/>");
-		return lines.length;
-	}
-
+	/*
+	 * private int countLines(String str) { String[] lines = str.split("<br/>");
+	 * return lines.length; }
+	 */
 	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
@@ -41,18 +40,19 @@ public class UMenu {
 
 		int curWidth = 0;
 		int curHeight = 0;
-		int stringCount = 0;
 
 		for (UMenuItemParam item : menuItems) {
 
-			JButton button = new JButton(item.getItemName());
+			JButton button = new JButton();
 			button.setBorderPainted(false);
 
 			button.setFont(font);
-			curWidth = Integer.max(button.getFontMetrics(font).stringWidth(item.getItemName()), curWidth);
-			curHeight = Integer.max(button.getFontMetrics(font).getHeight(), curHeight);
+			MenuItemCalculator itemCalculator = new MenuItemCalculator(item.getItemName(), button);
 
-			stringCount = Integer.max(stringCount, countLines(item.getItemName()));
+			button.setText(itemCalculator.getStringForMenu());
+
+			curWidth = Integer.max(itemCalculator.getWidth(), curWidth);
+			curHeight = Integer.max(itemCalculator.getHigh(), curHeight);
 
 			frame.add(button);
 			buttons.add(button);
@@ -141,7 +141,7 @@ public class UMenu {
 //		System.out.println("textheight = " + textheight);
 
 		int sizeWidth = curWidth + 25 * 2;// 400;
-		int sizeHeight = menuItems.size() * (curHeight * stringCount + 25 * 2);
+		int sizeHeight = menuItems.size() * (curHeight + 25 * 2);
 		frame.setSize(sizeWidth, sizeHeight);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

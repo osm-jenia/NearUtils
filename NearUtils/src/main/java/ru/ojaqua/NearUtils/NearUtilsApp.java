@@ -77,8 +77,7 @@ public class NearUtilsApp {
 					NearUtilsParamReader tmplReader = new NearUtilsParamReader(templStringParmPath);
 
 					List<UMenuItemParam> tmplStringPrmList = tmplReader.getPrm().getStringHandlerPrm().getTmplStringList().stream()
-							.map(str -> UMenuItemParam.crExecuter("<html>" + str.replaceAll("\n", "<br/>") + "</html>",
-									new TmplStringHandler(str, ClipboardWorker::setText)))
+							.map(str -> UMenuItemParam.crExecuter(str, new TmplStringHandler(str, ClipboardWorker::setText)))
 							.collect(Collectors.toList());
 
 					List<UMenuItemParam> menuParm = List.of(
