@@ -73,7 +73,11 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_without_result_center() {
 
-		String[] lines = { "123456   12345678901234567890   12345", "123456   12345678901234567890", "123456   1234567890123", };
+		// @formatter:off
+		String[] lines = { "123456   12345678901234567890   12345", 
+				           "123456   12345678901234567890", 
+				           "123456   1234567890123", };
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 9);
 
@@ -84,7 +88,11 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_without_result_left() {
 
-		String[] lines = { "12345678901234567890   12345", "12345678901234567890", "12345678901234", };
+		// @formatter:off
+		String[] lines = { "12345678901234567890   12345", 
+				           "12345678901234567890", 
+				           "12345678901234", };
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
@@ -95,7 +103,11 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_without_result_right() {
 
-		String[] lines = { "123456   12345678901234567890", "123456   12345678901234567890", "123456   1234567890123", };
+		// @formatter:off
+		String[] lines = { "123456   12345678901234567890", 
+				           "123456   12345678901234567890", 
+				           "123456   1234567890123", };
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 10);
 
@@ -106,7 +118,12 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_without_result_alone() {
 
-		String[] lines = { "12345678901234567890", "12345678901234567890", "1234567890123", };
+		// @formatter:off
+		String[] lines = { "12345678901234567890", 
+				           "12345678901234567890", 
+				           "1234567890123", 
+				         };
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
@@ -117,10 +134,14 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_center() {
 
-		String[] lines = { "123456   12345678901234567890   12345", "123456   12345678901234567890", "123456   1234567890123",
-				"123456   Result= 0              12345", "123456   12345678901234567890   12345",
-
+		// @formatter:off
+		String[] lines = { "123456   12345678901234567890   12345", 
+				           "123456   12345678901234567890", 
+				           "123456   1234567890123",
+				           "123456   Result= 0              12345", 
+				           "123456   12345678901234567890   12345",
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 9);
 
@@ -131,10 +152,13 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_left() {
 
-		String[] lines = { "12345678901234567890   12345", "12345678901234567890", "12345678901234", "Result= 0              12345",
-				"12345678901234567890   12345",
-
+		// @formatter:off
+		String[] lines = { "12345678901234567890   12345", 
+				           "12345678901234567890", "12345678901234", 
+				           "Result= 0              12345",
+				           "12345678901234567890   12345",
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
@@ -145,10 +169,15 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_right() {
 
-		String[] lines = { "123456   12345678901234567890", "123456   12345678901234567890", "123456   1234567890123", "123456   Result= 0",
-				"123456   12345678901234567890",
+		// @formatter:off
+		String[] lines = { "123456   12345678901234567890", 
+				           "123456   12345678901234567890", 
+				           "123456   1234567890123", 
+				           "123456   Result= 0",
+				           "123456   12345678901234567890",
 
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 10);
 
@@ -159,9 +188,15 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_alone() {
 
-		String[] lines = { "12345678901234567890", "12345678901234567890", "1234567890123", "Result= 0", "12345678901234567890",
+		// @formatter:off
+		String[] lines = { "12345678901234567890", 
+				           "12345678901234567890", 
+				           "1234567890123", 
+				           "Result= 0", 
+				           "12345678901234567890",
 
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 0, 0);
 
@@ -172,11 +207,16 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_center_with_param() {
 
-		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", "123456   #2, type RSDSHORT, value: 0      12345",
-				"123456   123456789012345678901234567890   12345", "123456   123456789012345678901234567890", "123456   1234567890123",
-				"123456   Result= 0                         12345", "123456   12345678901234567890             12345",
-
+		// @formatter:off
+		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", 
+				           "123456   #2, type RSDSHORT, value: 0      12345",
+				           "123456   123456789012345678901234567890   12345", 
+				           "123456   123456789012345678901234567890", 
+				           "123456   1234567890123",
+				           "123456   Result= 0                        12345", 
+				           "123456   12345678901234567890             12345",
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
@@ -187,11 +227,17 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_left_with_param() {
 
-		String[] lines = { "#1, type RSDSHORT, value: 0      12345", "#2, type RSDSHORT, value: 0      12345",
-				"123456789012345678901234567890   12345", "123456789012345678901234567890", "1234567890123", "Result= 0                        12345",
-				"12345678901234567890             12345",
+		// @formatter:off
+		String[] lines = { "#1, type RSDSHORT, value: 0      12345", 
+				           "#2, type RSDSHORT, value: 0      12345",
+				           "123456789012345678901234567890   12345", 
+				           "123456789012345678901234567890", 
+				           "1234567890123", 
+				           "Result= 0                        12345",
+				           "12345678901234567890             12345",
 
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 0);
 
@@ -202,10 +248,16 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_rght_with_param() {
 
-		String[] lines = { "123456   #1, type RSDSHORT, value: 0", "123456   #2, type RSDSHORT, value: 0", "123456   123456789012345678901234567890",
-				"123456   123456789012345678901234567890", "123456   1234567890123", "123456   Result= 0", "123456   12345678901234567890",
-
+		// @formatter:off
+		String[] lines = { "123456   #1, type RSDSHORT, value: 0", 
+				           "123456   #2, type RSDSHORT, value: 0", 
+				           "123456   123456789012345678901234567890",
+				           "123456   123456789012345678901234567890", 
+				           "123456   1234567890123", 
+				           "123456   Result= 0", 
+				           "123456   12345678901234567890",
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
@@ -216,11 +268,17 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_shaffle_position_left_with_param() {
 
-		String[] lines = { "#1, type RSDSHORT, value: 0            12345", "#2, type RSDSHORT, value: 0            12345",
-				"12345678901234   567890123456789   0   12345", "1234567890123   4567890123456   7890", "1234567   890123",
-				"Result= 0                              12345", "1234567   89012345   67890             12345",
+		// @formatter:off
+		String[] lines = { "#1, type RSDSHORT, value: 0            12345", 
+				           "#2, type RSDSHORT, value: 0            12345",
+				           "12345678901234   567890123456789   0   12345", 
+				           "1234567890123   4567890123456   7890", 
+				           "1234567   890123",
+				           "Result= 0                              12345", 
+				           "1234567   89012345   67890             12345",
 
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 0);
 
@@ -231,11 +289,17 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void get_space_position_center_with_param_start_space() {
 
-		String[] lines = { "123456   #1, type RSDSHORT, value: 0      12345", "123456   #2, type RSDSHORT, value: 0      12345",
-				"123456   12345678901234567890123456789    12345", "123456   123456789012345678901234567890", "123456   1234567890123",
-				"123456   Result= 0                        12345", "123456   12345678901234567890             12345",
+		// @formatter:off
+		String[] lines = {  "123456   #1, type RSDSHORT, value: 0      12345", 
+				            "123456   #2, type RSDSHORT, value: 0      12345",
+              				"123456   12345678901234567890123456789    12345", 
+              				"123456   123456789012345678901234567890", 
+              				"123456   1234567890123",
+				            "123456   Result= 0                        12345", 
+				            "123456   12345678901234567890             12345",
 
 		};
+		// @formatter:on
 
 		int endPosition = new QueryGetterHandler(null, null).getEndPositionInLine(lines, 2, 9);
 
@@ -263,10 +327,15 @@ public class QueryGetterHandlerTest {
 
 	@Test
 	public void full_query_position_center_with_param() {
-
-		String lines = "123456   KeyFind: using search SQL        12345\n" + "123456   #1, type RSDSHORT, value: 0      12345\n"
-				+ "123456   #2, type RSDSHORT, value: 0      12345\n" + "123456   123456789012_?_678901234567e     12345\n"
-				+ "123456   123456789012_?_67890123456789e\n" + "123456   1234567890123e\n" + "123456   Result= 0                        12345\n";
+		// @formatter:off
+		String lines = "123456   KeyFind: using search SQL        12345\n" 
+		             + "123456   #1, type RSDSHORT, value: 0      12345\n"
+				     + "123456   #2, type RSDSHORT, value: 0      12345\n" 
+		             + "123456   123456789012_?_678901234567e     12345\n"
+				     + "123456   123456789012_?_67890123456789e\n" 
+		             + "123456   1234567890123e\n" 
+				     + "123456   Result= 0                        12345\n";
+        // @formatter:on
 
 		new QueryGetterHandler(() -> lines, (str) -> {
 			assertEquals("123456789012_0_678901234567e  123456789012_0_67890123456789e1234567890123e", str);
@@ -276,9 +345,15 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void full_query_position_center_with__colon_param() {
 
-		String lines = "123456   KeyFind: using search SQL        12345\n" + "123456   #1, type RSDSHORT, value: 0      12345\n"
-				+ "123456   #2, type RSDLPSTR, value: 0      12345\n" + "123456   1234567 :ghhghj 67890123567e     12345\n"
-				+ "123456   123456789012 :r1j 6789156789e\n" + "123456   1234567890123e\n" + "123456   Result= 0                        12345\n";
+		// @formatter:off
+		String lines = "123456   KeyFind: using search SQL        12345\n" 
+		             + "123456   #1, type RSDSHORT, value: 0      12345\n"
+				     + "123456   #2, type RSDLPSTR, value: 0      12345\n" 
+		             + "123456   1234567 :ghhghj 67890123567e     12345\n"
+				     + "123456   123456789012 :r1j 6789156789e\n" 
+		             + "123456   1234567890123e\n" 
+				     + "123456   Result= 0                        12345\n";
+		// @formatter:on
 
 		new QueryGetterHandler(() -> lines, (str) -> {
 			assertEquals("1234567 0 67890123567e 123456789012 '0' 6789156789e1234567890123e", str);
@@ -288,9 +363,15 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void full_query_position_center_with__colon_error_param() {
 
-		String lines = "123456   KeyFind: using search SQL        12345\n" + "123456   #1, type RSDERROR, value: 0      12345\n"
-				+ "123456   #2, type RSDSHORT, value: 0      12345\n" + "123456   1234567 :ghhghj 67890123567e     12345\n"
-				+ "123456   1r'hjg?hh' 12 :r1j 6789156789e\n" + "123456   1234567890123e\n" + "123456   Result= 0                        12345\n";
+		// @formatter:off
+		String lines = "123456   KeyFind: using search SQL        12345\n" 
+		             + "123456   #1, type RSDERROR, value: 0      12345\n"
+				     + "123456   #2, type RSDSHORT, value: 0      12345\n" 
+		             + "123456   1234567 :ghhghj 67890123567e     12345\n"
+				     + "123456   1r'hjg?hh' 12 :r1j 6789156789e\n" 
+		             + "123456   1234567890123e\n" 
+				     + "123456   Result= 0                        12345\n";
+		// @formatter:on
 
 		new QueryGetterHandler(() -> lines, (str) -> {
 			assertEquals("1234567 0 67890123567e  1r'hjg?hh' 12 0 6789156789e1234567890123e", str);
@@ -300,14 +381,16 @@ public class QueryGetterHandlerTest {
 	@Test
 	public void full_packege_position_center_with_param() {
 
+		// @formatter:off
 		String lines = "123456   KeyFind: using search SQL                               12345\n"
-				+ "123456   #1, type RSDSHORT, value: 0                             12345\n"
-				+ "123456   #2, type RSDSHORT, value: 0                             12345\n"
-				+ "123456   BEG := IN ? := RSB_Common.RSI_GetRegdParam(?); END;     12345\n"
-				+ "123456   Result= 0                                               12345\n";
+				     + "123456   #1, type RSDSHORT, value: 0                             12345\n"
+				     + "123456   #2, type RSDSHORT, value: 0                             12345\n"
+				     + "123456   BEG := IN ? := RSB_Common.RSI_GetRegdParam(?);   END;   12345\n"
+				     + "123456   Result= 0                                               12345\n";
+		// @formatter:on
 
 		new QueryGetterHandler(() -> lines, (str) -> {
-			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0); END;", str);
+			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0);   END;", str);
 		}).run();
 	}
 

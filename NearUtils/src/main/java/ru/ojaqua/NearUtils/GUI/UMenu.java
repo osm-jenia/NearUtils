@@ -1,9 +1,11 @@
 package ru.ojaqua.NearUtils.GUI;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -13,7 +15,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 
 import ru.ojaqua.NearUtils.Common.ExceptionHundler;
 
@@ -22,21 +23,11 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	/*
-	 * private int countLines(String str) { String[] lines = str.split("<br/>");
-	 * return lines.length; }
-	 */
 	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
-		frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+		// frame.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
 		frame.setUndecorated(true);
-
-		Font font = new Font("DialogInput", Font.BOLD, 15);
-//		AffineTransform affinetransform = new AffineTransform();
-//		FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
-//
-//		Graphics g;
 
 		int curWidth = 0;
 		int curHeight = 0;
@@ -46,7 +37,6 @@ public class UMenu {
 			JButton button = new JButton();
 			button.setBorderPainted(false);
 
-			button.setFont(font);
 			MenuItemCalculator itemCalculator = new MenuItemCalculator(item.getItemName(), button);
 
 			button.setText(itemCalculator.getStringForMenu());
@@ -57,7 +47,23 @@ public class UMenu {
 			frame.add(button);
 			buttons.add(button);
 
-//			prevSize = Integer.max((int) (font.getStringBounds(item.getItemName(), frc).getWidth()), prevSize);
+			// button.setFocusPainted(false);
+
+			button.addFocusListener(new FocusListener() {
+
+				Color oldFColor = button.getForeground();
+				Color oldBColor = button.getBackground();
+
+				public void focusGained(FocusEvent e) {
+					button.setBackground(Color.GRAY);
+					button.setForeground(Color.WHITE);
+				}
+
+				public void focusLost(FocusEvent e) {
+					button.setBackground(oldBColor);
+					button.setForeground(oldFColor);
+				}
+			});
 
 			button.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -132,16 +138,8 @@ public class UMenu {
 			});
 		}
 
-		// String text = "Hello World\nHello World\nHello World";
-		// Font font = new Font("Tahoma", Font.PLAIN, 12);
-		// int textwidth = (int) (font.getStringBounds(text, frc).getWidth());
-//		int textheight = (int) (font.getStringBounds(text, frc).getHeight());
-
-//		System.out.println("textwidth = " + textwidth);
-//		System.out.println("textheight = " + textheight);
-
-		int sizeWidth = curWidth + 25 * 2;// 400;
-		int sizeHeight = menuItems.size() * (curHeight + 25 * 2);
+		int sizeWidth = curWidth + 20 * 2;// 400;
+		int sizeHeight = menuItems.size() * (curHeight + 15 * 2);
 		frame.setSize(sizeWidth, sizeHeight);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
