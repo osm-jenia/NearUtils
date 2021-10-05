@@ -2,15 +2,26 @@
 <nearUtilsParam>
 	<tmplStringHandlerParam>
 		<TmplStringList>
-			<TmplString>содержание 1 содержание 2 содержание 3 содержание 4
-содержание 5
-содержание 2
-содержание 3
-содержание 4
-содержание 5
-содержание 6</TmplString>
-			<TmplString>шаблон 2</TmplString>
-			<TmplString>шаблон 3</TmplString>
+			<TmplString>Необходимо исполнить скрипты из папки RunSql\sql. Для этого:
+  - В файле RunSql\run_scripts.bat прописать параметры user, pass, tns
+  - Запустить run_scripts.bat, проверить RunSql\run_scripts.log на отсутствие ошибок.</TmplString>
+			<TmplString>Загрузить в схему обновление FMT из папки FMT\XML. Для этого:
+  - В файле FMT\start_import.cmd поправить значение параметра строки соединения "dsn=;user id=;password=", заменить ее на "dsn={имя источника данных ODBC драйвера};user id={пользователь БД};password={пароль пользователя БД}" (аналогично указывается параметр CONNSTRING в файле rsreq.ini из папки Obj).
+  - Запустить start_import.cmd, проверить protocol.out в подкаталоге XML на отсутствие ошибок.</TmplString>
+			<TmplString>Нужно пересобрать:
+  1) Все библиотеки *.lib и все модули *.exe, *.dll, *.d32 (Source\RS-BankV6_vs2010.sln)</TmplString>
+			<TmplString>Нужно пересобрать:
+  1) Библиотеки:
+    wllf.lib (wllf.lib\WLLF32.vcxproj)
+    cbpmin.lib (cbpmin.lib\cbpmin32.vcxproj)
+    
+  2) Модуль:
+    rswld.dll (rswld.www\rswld.vcxproj)
+    rsaccdl.dll (rsaccoun.www\rsaccdl.vcproj)</TmplString>
+    		<TmplString>Для установки хотфикса нужно:
+1. Скопировать в каталог RS-Bank на сервере приложений каталоги Obj и Mac (находится в каталоге СП).
+    		</TmplString>
 		</TmplStringList>
+		
 	</tmplStringHandlerParam>
 </nearUtilsParam>
