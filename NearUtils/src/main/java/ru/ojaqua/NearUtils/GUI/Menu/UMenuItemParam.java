@@ -1,11 +1,9 @@
-package ru.ojaqua.NearUtils.GUI;
-
-import java.util.List;
+package ru.ojaqua.NearUtils.GUI.Menu;
 
 public class UMenuItemParam {
 	UMenuItemType type;
 	private String itemName;
-	private List<UMenuItemParam> submenu;
+	private UMenuParam submenu;
 	private Runnable executer;
 
 	public static UMenuItemParam crSeparator() {
@@ -16,7 +14,7 @@ public class UMenuItemParam {
 		return item;
 	}
 
-	public static UMenuItemParam crSubMenu(String itemName, List<UMenuItemParam> submenu) {
+	public static UMenuItemParam crSubMenu(String itemName, UMenuParam submenu) {
 		UMenuItemParam item = new UMenuItemParam();
 
 		item.type = UMenuItemType.SubMenu;
@@ -47,7 +45,7 @@ public class UMenuItemParam {
 		return itemName;
 	}
 
-	public List<UMenuItemParam> getSubmenu() {
+	public UMenuParam getSubmenu() {
 		return submenu;
 	}
 

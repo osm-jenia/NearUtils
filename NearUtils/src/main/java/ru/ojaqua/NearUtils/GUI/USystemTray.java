@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import ru.ojaqua.NearUtils.Common.UError;
+import ru.ojaqua.NearUtils.GUI.Menu.UMenu;
 
 public class USystemTray {
 

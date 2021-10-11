@@ -1,4 +1,4 @@
-package ru.ojaqua.NearUtils.GUI;
+package ru.ojaqua.NearUtils.GUI.Menu;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +23,8 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	public UMenu(List<UMenuItemParam> menuItems, String nameProgram) {
+	public UMenu(UMenuParam menuParam, String nameProgram) {
+		List<UMenuItemParam> menuItems = menuParam.getMenuItems();
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
 		// frame.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
@@ -46,6 +47,7 @@ public class UMenu {
 
 			frame.add(button);
 			buttons.add(button);
+			button.setHorizontalAlignment(menuParam.getAlignment());
 
 			// button.setFocusPainted(false);
 

@@ -1,4 +1,4 @@
-package ru.ojaqua.NearUtils.GUI;
+package ru.ojaqua.NearUtils.GUI.Menu;
 
 import java.util.Arrays;
 import java.util.List;

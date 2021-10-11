@@ -27,7 +27,7 @@ public class StringFinderTest {
 
 		StringFinder finder = new StringFinder("jdfhgjkdfkjh", "   ");
 		assertFalse(finder.find());
-		assertEquals(finder.getCurPosition(), 12);
+		assertEquals(finder.getCurPosition(), -1);
 
 	}
 }

@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -15,9 +16,10 @@ import com.melloware.jintellitype.JIntellitype;
 import ru.ojaqua.NearUtils.Common.ClipboardWorker;
 import ru.ojaqua.NearUtils.Common.ExceptionHundler;
 import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.GUI.UMenu;
-import ru.ojaqua.NearUtils.GUI.UMenuItemParam;
 import ru.ojaqua.NearUtils.GUI.USystemTray;
+import ru.ojaqua.NearUtils.GUI.Menu.UMenu;
+import ru.ojaqua.NearUtils.GUI.Menu.UMenuItemParam;
+import ru.ojaqua.NearUtils.GUI.Menu.UMenuParam;
 import ru.ojaqua.NearUtils.Handlers.QueryGetterHandler.QueryGetterHandler;
 import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler.SCRGetterHandler;
 import ru.ojaqua.NearUtils.Handlers.TmplStringHandler.TmplStringHandler;
@@ -80,16 +82,16 @@ public class NearUtilsApp {
 							.map(str -> UMenuItemParam.crExecuter(str, new TmplStringHandler(str, ClipboardWorker::setText)))
 							.collect(Collectors.toList());
 
-					List<UMenuItemParam> menuParm = List.of(
+					List<UMenuItemParam> menuItems = List.of(
 							UMenuItemParam.crExecuter("Получить номера запросов",
 									new SCRGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)),
 							UMenuItemParam.crExecuter("Получить запрос из трассы",
 									new QueryGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)),
-							UMenuItemParam.crSubMenu("Шаблоны строк", tmplStringPrmList)
+							UMenuItemParam.crSubMenu("Шаблоны строк", new UMenuParam(SwingConstants.LEFT, tmplStringPrmList))
 
 					);
 
-					UMenu menu = new UMenu(menuParm, nameProgram);
+					UMenu menu = new UMenu(new UMenuParam(menuItems), nameProgram);
 
 					@SuppressWarnings("unused")
 					USystemTray systemTray = new USystemTray(SystemTray.getSystemTray(), menu);

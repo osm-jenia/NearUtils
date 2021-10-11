@@ -39,7 +39,7 @@ public class QueryGetterHandler implements Runnable {
 
 	Supplier<String> supplier;
 	Consumer<String> consumer;
-	static final int UNDEF_POS = -1;
+	// static final int UNDEF_POS = -1;
 
 	// static final String varPatternStr = "#\\d+, type
 	// RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
@@ -67,8 +67,8 @@ public class QueryGetterHandler implements Runnable {
 		String[] lines = linesPattern.split(inputString);
 
 		List<String> vars = new ArrayList<>();
-		int startPositionInLine = UNDEF_POS;
-		int endPositionInLine = UNDEF_POS;
+		int startPositionInLine = StringFinder.UNDEF_POS;
+		int endPositionInLine = StringFinder.UNDEF_POS;
 		boolean isVarFinished = false;
 		boolean isQueryFinished = false;
 		StringBuilder query = new StringBuilder();
@@ -81,14 +81,14 @@ public class QueryGetterHandler implements Runnable {
 			//
 			if (!isVarFinished && addVarIfExists(vars, line)) {
 
-				if (startPositionInLine == UNDEF_POS)
+				if (startPositionInLine == StringFinder.UNDEF_POS)
 					startPositionInLine = line.indexOf("#1, type RSD");
 
 			}
 			// Если уже была первая переменная, но в текущей линии больше переменных не
 			// нашли
 			// Это значит, что переменные закончились и теперь читаем запрос
-			else if (startPositionInLine != UNDEF_POS && !isQueryFinished) {
+			else if (startPositionInLine != StringFinder.UNDEF_POS && !isQueryFinished) {
 
 				if (!isVarFinished)
 					isVarFinished = true;
@@ -101,8 +101,17 @@ public class QueryGetterHandler implements Runnable {
 					//
 					// Если не определена позиция окончания строки запроса, то находим ee
 					//
-					if (endPositionInLine == UNDEF_POS) {
-						endPositionInLine = getEndPositionInLine(lines, i, startPositionInLine);
+					if (endPositionInLine == StringFinder.UNDEF_POS) {
+						// Если первая переменная оказалась в позиции 0, то считаем что в буфере
+						// окончание строки также является окончанием запроса
+						// Такой алгоритм нужен, если неверно отрабатывает более сложный - по трем
+						// пробелаам, а такие варианты теоретически возможны, так как запрос может
+						// состоять из двух строк при этом в первой строке будет масса мест с тремя
+						// пробелами,тогда мы скорее всего неверно рассчитаем
+						if (startPositionInLine == 0)
+							endPositionInLine = line.length();
+						else
+							endPositionInLine = getEndPositionInLine(lines, i, startPositionInLine);
 					}
 
 					if (!isQueryFinished) {
@@ -159,38 +168,49 @@ public class QueryGetterHandler implements Runnable {
 
 		String startQueryLine = lines[startQueryLineNumber];
 
-		int startLineSpacePosition = UNDEF_POS;
-		int endPositionInLine = UNDEF_POS;
+		int startLineSpacePosition = StringFinder.UNDEF_POS;
+		int endPositionInLine = StringFinder.UNDEF_POS;
 
+		StringFinder strFinder = new StringFinder(startQueryLine.substring(startPositionInLine), "   ");
 		// Если количество на запрос строк больше 1, то длинну определяем по пробельным
 		// символам на каждой строке
 		if (lines.length > startQueryLineNumber + 1) {
 
-			StringFinder strFinder = new StringFinder(startQueryLine.substring(startPositionInLine), "   ");
-			// Pattern startLineSpacePattern = Pattern.compile(threeSpacePatternStr);
-			// Matcher startLineSpaceMatcher =
-			// startLineSpacePattern.matcher(startQueryLine.substring(startPositionInLine));
-
-			nextSpacePlace: while (endPositionInLine == UNDEF_POS) {
+			nextSpacePlace: while (endPositionInLine == StringFinder.UNDEF_POS) {
 
 				if (strFinder.find())
 					startLineSpacePosition = startPositionInLine + strFinder.getCurPosition();
 				else
-					startLineSpacePosition = UNDEF_POS;
+					startLineSpacePosition = StringFinder.UNDEF_POS;
 
 				if (startLineSpacePosition > 0 && startLineSpacePosition < startQueryLine.length()) {
-					for (int j = startQueryLineNumber; j < lines.length && endPositionInLine == UNDEF_POS; j++) {
+					for (int j = startQueryLineNumber; j < lines.length && endPositionInLine == StringFinder.UNDEF_POS; j++) {
 
 						// Если дошли до Result, то приехали в конец
 						if (lines[j].substring(startPositionInLine).matches(endQueryPatternStr)) {
 
-							if (startQueryLineNumber == j)
+							if (startQueryLineNumber == j) {
 								throw new UError("Неожиданный Result. Не нашел текст запроса");
-
-							endPositionInLine = startLineSpacePosition;
+//							}else if (startQueryLineNumber + 3 >= j) { // Это ситуация неопределенности, так как позиция правого края запроса у нас не
+//																		// подтвердилась переносом строки
+//								if (strFinder.findLast()) // В этой ситуации вычисляем самый правый тройной пробел
+//									endPositionInLine = startPositionInLine + strFinder.getCurPosition();
+//								else// Если его нет, то берем максимальную длинну
+//									endPositionInLine = startQueryLine.length();
+							} else
+								endPositionInLine = startLineSpacePosition;
 							break nextSpacePlace;
-							// Если мы находимся на последней строке
-						} else if (j == lines.length - 1) {
+
+//						} else if (j == lines.length - 1 && startQueryLineNumber + 2 >= j) { // Если мы находимся на полседней строке и при этом
+//																								// запрос вместился в две строки, то это ситуация
+//																								// неопределенности, так как длина не подтвердилась
+//																								// переносом строки
+//
+//							if (strFinder.findLast()) // В этой ситуации вычисляем самый правый тройной пробел
+//								endPositionInLine = startPositionInLine + strFinder.getCurPosition();
+//							else// Если его нет, то берем максимальную длинну
+//								endPositionInLine = startQueryLine.length();
+						} else if (j == lines.length - 1) { // Если мы находимся на последней строке
 							endPositionInLine = startLineSpacePosition;
 							break nextSpacePlace;
 							// Если длинна текущей строки меньше, чем позиция трех пробелов, то считаем, что
@@ -201,11 +221,6 @@ public class QueryGetterHandler implements Runnable {
 
 							continue;
 
-							// Если на той же позиции нашли три пробела или окончание строки
-							// Все норм
-//						} else if ( lines[j].length() == startLineSpacePosition  )/*[j].substring(startLineSpacePosition).matches("(^\\s{3}.+$)|$"))*/ {
-//
-//							continue;
 						} else
 							continue nextSpacePlace;
 					}
@@ -216,6 +231,9 @@ public class QueryGetterHandler implements Runnable {
 				}
 			}
 		} else { // Одна строка осталась в массиве, значит ее длинну и берем
+//			if (strFinder.findLast())
+//				endPositionInLine = startPositionInLine + strFinder.getCurPosition();
+//			else
 			endPositionInLine = startQueryLine.length();
 		}
 

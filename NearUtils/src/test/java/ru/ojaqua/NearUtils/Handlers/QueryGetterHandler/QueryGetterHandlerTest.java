@@ -390,8 +390,37 @@ public class QueryGetterHandlerTest {
 		// @formatter:on
 
 		new QueryGetterHandler(() -> lines, (str) -> {
-			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0);   END;", str);
+			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0);", str);
 		}).run();
 	}
 
+	@Test
+	public void full_packege_position_center_with_param_without_result() {
+
+		// @formatter:off
+		String lines = "123456   KeyFind: using search SQL                               12345\n"
+				     + "123456   #1, type RSDSHORT, value: 0                             12345\n"
+				     + "123456   #2, type RSDSHORT, value: 0                             12345\n"
+				     + "123456   BEG := IN ? := RSB_Common.RSI_GetRegdParam(?);   END;   12345";
+		// @formatter:on
+
+		new QueryGetterHandler(() -> lines, (str) -> {
+			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0);   END;   12345", str);
+		}).run();
+	}
+
+	@Test
+	public void full_packege_position_right_with_param_without_result() {
+
+		// @formatter:off
+		String lines = "123456   KeyFind: using search SQL                            \n"
+				     + "123456   #1, type RSDSHORT, value: 0                          \n"
+				     + "123456   #2, type RSDSHORT, value: 0                          \n"
+				     + "123456   BEG := IN ? := RSB_Common.RSI_GetRegdParam(?);   END;";
+		// @formatter:on
+
+		new QueryGetterHandler(() -> lines, (str) -> {
+			assertEquals("BEG := IN 0 := RSB_Common.RSI_GetRegdParam(0);   END;", str);
+		}).run();
+	}
 }
