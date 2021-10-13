@@ -2,9 +2,9 @@ package ru.ojaqua.NearUtils.Common;
 
 import javax.swing.JOptionPane;
 
-public class ExceptionHundler {
+public class ExceptionHandler {
 
-	public static void exceptionHundler(Exception ex) {
+	public static void process(Exception ex) {
 
 		System.err.println(java.time.LocalDateTime.now());
 

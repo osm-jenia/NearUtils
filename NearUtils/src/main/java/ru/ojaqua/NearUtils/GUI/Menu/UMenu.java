@@ -16,7 +16,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import ru.ojaqua.NearUtils.Common.ExceptionHundler;
+import ru.ojaqua.NearUtils.Common.ExceptionHandler;
 
 public class UMenu {
 	private List<JButton> buttons = new ArrayList<>();
@@ -77,7 +77,7 @@ public class UMenu {
 							item.getExecuter().run();
 
 						} catch (Exception ex) {
-							ExceptionHundler.exceptionHundler(ex);
+							ExceptionHandler.process(ex);
 						}
 
 						frame.setVisible(false);
@@ -123,7 +123,7 @@ public class UMenu {
 								item.getExecuter().run();
 
 							} catch (Exception ex) {
-								ExceptionHundler.exceptionHundler(ex);
+								ExceptionHandler.process(ex);
 							}
 
 							frame.setVisible(false);

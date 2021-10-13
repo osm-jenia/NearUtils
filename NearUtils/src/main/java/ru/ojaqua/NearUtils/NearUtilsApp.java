@@ -14,7 +14,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.melloware.jintellitype.JIntellitype;
 
 import ru.ojaqua.NearUtils.Common.ClipboardWorker;
-import ru.ojaqua.NearUtils.Common.ExceptionHundler;
+import ru.ojaqua.NearUtils.Common.ExceptionHandler;
 import ru.ojaqua.NearUtils.Common.UError;
 import ru.ojaqua.NearUtils.GUI.USystemTray;
 import ru.ojaqua.NearUtils.GUI.Menu.UMenu;
@@ -29,6 +29,7 @@ import ru.ojaqua.NearUtils.Param.NearUtilsParamReader;
  * Hello world!
  *
  */
+//@ComponentScan("ru.ojaqua.NearUtils")
 public class NearUtilsApp {
 	private static final int SHIFT_ALT_3 = 88;
 	private static final String nameProgram = "Near utils";
@@ -63,7 +64,7 @@ public class NearUtilsApp {
 		try {
 			prepareProgram();
 		} catch (Exception e) {
-			ExceptionHundler.exceptionHundler(e);
+			ExceptionHandler.process(e);
 			return;
 		}
 
@@ -72,6 +73,9 @@ public class NearUtilsApp {
 			public void run() {
 
 				try {
+					// ApplicationContext ctx = new
+					// AnnotationConfigApplicationContext(NearUtilsApp.class);
+					// ctx.getBean(null);
 
 					URI uri = NearUtilsApp.class.getResource("/NearUtilsParam.xml").toURI();
 					Path templStringParmPath = Paths.get(uri).toAbsolutePath();
@@ -103,7 +107,7 @@ public class NearUtilsApp {
 
 					});
 				} catch (Exception e) {
-					ExceptionHundler.exceptionHundler(e);
+					ExceptionHandler.process(e);
 				}
 
 			}
