@@ -49,8 +49,6 @@ class StringFinder {
 			}
 		}
 
-		// curPosition = string.length;
-
 		return false;
 	}
 

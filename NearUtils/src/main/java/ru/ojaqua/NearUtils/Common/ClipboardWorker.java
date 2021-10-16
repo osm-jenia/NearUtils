@@ -5,15 +5,19 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 
-public class ClipboardWorker {
-	public static void setText(String text) {
+import org.springframework.stereotype.Component;
+
+@Component
+public class ClipboardWorker implements IClipboardWorker {
+
+	public void setText(String text) {
 
 		StringSelection stringSelection = new StringSelection(text);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
 	}
 
-	public static String getText() {
+	public String getText() {
 		try {
 
 			return (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);

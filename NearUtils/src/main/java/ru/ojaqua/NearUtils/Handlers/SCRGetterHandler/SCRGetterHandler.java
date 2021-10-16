@@ -2,28 +2,37 @@ package ru.ojaqua.NearUtils.Handlers.SCRGetterHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SCRGetterHandler implements Runnable {
+import org.springframework.stereotype.Component;
 
-	Supplier<String> supplier;
-	Consumer<String> consumer;
+import ru.ojaqua.NearUtils.Common.IClipboardWorker;
+import ru.ojaqua.NearUtils.Handlers.IHandler;
 
-	public SCRGetterHandler(Supplier<String> supplier, Consumer<String> consumer) {
-		this.supplier = supplier;
-		this.consumer = consumer;
+@Component
+public class SCRGetterHandler implements IHandler {
+
+	IClipboardWorker clipboard;
+
+	public SCRGetterHandler(IClipboardWorker clipboard) {
+
+		this.clipboard = clipboard;
+
+	}
+
+	@Override
+	public String getName() {
+		return "Получить номера запросов";
 	}
 
 	@Override
 	public void run() {
 
-		String inputString = supplier.get();
+		String inputString = clipboard.getText();
 
 		if (inputString == null) {
-			consumer.accept("");
+			clipboard.setText("");
 		} else {
 			ArrayList<String> queries = new ArrayList<>();
 
@@ -46,7 +55,7 @@ public class SCRGetterHandler implements Runnable {
 			}
 
 			Collections.sort(queries);
-			consumer.accept(String.join(", ", queries));
+			clipboard.setText(String.join(", ", queries));
 		}
 
 	}

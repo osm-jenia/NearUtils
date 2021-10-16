@@ -10,18 +10,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+import javax.annotation.PostConstruct;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.GUI.Menu.UMenu;
+import org.springframework.stereotype.Component;
 
+import ru.ojaqua.NearUtils.Common.UError;
+import ru.ojaqua.NearUtils.GUI.Menu.UMainMenu;
+
+@Component
 public class USystemTray {
 
-	final private TrayIcon trayIcon;
+	final private UMainMenu mainMenu;
+	final private SystemTray tray;
 
-	public USystemTray(SystemTray tray, UMenu mainMenu) {
-		trayIcon = new TrayIcon(createImage("/nearUtilsTray.png", "NearUtils"));
+	public USystemTray(SystemTray tray, UMainMenu mainMenu) {
+		this.mainMenu = mainMenu;
+		this.tray = tray;
+	}
+
+	@PostConstruct
+	void init() {
+		TrayIcon trayIcon = new TrayIcon(createImage("/nearUtilsTray.png", "NearUtils"));
 
 		trayIcon.setImageAutoSize(true);
 
@@ -58,6 +69,7 @@ public class USystemTray {
 		} catch (AWTException e) {
 			throw new UError("Возникли проблемы при добавлении иконки в трей", e);
 		}
+
 	}
 
 	protected Image createImage(String path, String description) {

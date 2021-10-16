@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 public class NearUtilsParam {
 
 	@XmlElement(name = "tmplStringHandlerParam")
-	TmplStringHandlerParam tmplStringHandlerParam;
+	private TmplStringHandlerParam tmplStringHandlerParam;
 
 	public TmplStringHandlerParam getStringHandlerPrm() {
 		return tmplStringHandlerParam;

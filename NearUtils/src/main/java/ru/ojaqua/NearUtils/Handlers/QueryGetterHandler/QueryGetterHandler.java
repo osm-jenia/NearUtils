@@ -2,14 +2,19 @@ package ru.ojaqua.NearUtils.Handlers.QueryGetterHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ru.ojaqua.NearUtils.Common.UError;
+import org.springframework.stereotype.Component;
 
-public class QueryGetterHandler implements Runnable {
+import ru.ojaqua.NearUtils.Common.IClipboardWorker;
+import ru.ojaqua.NearUtils.Common.UError;
+import ru.ojaqua.NearUtils.Handlers.IHandler;
+
+@Component
+public class QueryGetterHandler implements IHandler {
+
+	IClipboardWorker clipboard;
 
 	/**
 	 * состояния конечного автомата, который используется при подстановке значений в
@@ -37,28 +42,26 @@ public class QueryGetterHandler implements Runnable {
 		QUESTION_MARK // вопросительный знак
 	};
 
-	Supplier<String> supplier;
-	Consumer<String> consumer;
-	// static final int UNDEF_POS = -1;
-
-	// static final String varPatternStr = "#\\d+, type
-	// RSD(SHORT|CHAR|LONG|LPSTR|DATE|TIME|PT_NUMERIC), value: \\S*\\s";
 	static final String varPatternStr = "#\\d+, type RSD\\w+, value: \\S*\\s";
 
 	static final String endQueryPatternStr = "^Result=\\s\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
-	public QueryGetterHandler(Supplier<String> supplier, Consumer<String> consumer) {
-		this.supplier = supplier;
-		this.consumer = consumer;
+	public QueryGetterHandler(IClipboardWorker clipboard) {
+		this.clipboard = clipboard;
+	}
+
+	@Override
+	public String getName() {
+		return "Получить запрос из трассы";
 	}
 
 	@Override
 	public void run() {
-		String inputString = supplier.get();
+		String inputString = clipboard.getText();
 
 		if (inputString == null) {
-			consumer.accept("");
+			clipboard.setText("");
 			return;
 		}
 
@@ -130,7 +133,7 @@ public class QueryGetterHandler implements Runnable {
 		//
 		String queryWithValues = getQueryWithValues(query.toString(), vars);
 
-		consumer.accept(queryWithValues);
+		clipboard.setText(queryWithValues);
 	}
 
 	/**

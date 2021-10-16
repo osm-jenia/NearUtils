@@ -23,7 +23,11 @@ public class UMenu {
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	public UMenu(UMenuParam menuParam, String nameProgram) {
+	protected UMenu() {
+
+	}
+
+	public void init(UMenuParam menuParam, String nameProgram) {
 		List<UMenuItemParam> menuItems = menuParam.getMenuItems();
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
@@ -81,9 +85,6 @@ public class UMenu {
 						}
 
 						frame.setVisible(false);
-					} else if (item.getType() == UMenuItemType.SubMenu) {
-						UMenu menu = new UMenu(item.getSubmenu(), nameProgram);
-						menu.show();
 					}
 				}
 
@@ -127,9 +128,6 @@ public class UMenu {
 							}
 
 							frame.setVisible(false);
-						} else if (item.getType() == UMenuItemType.SubMenu) {
-							UMenu menu = new UMenu(item.getSubmenu(), nameProgram);
-							menu.show();
 						}
 
 					}

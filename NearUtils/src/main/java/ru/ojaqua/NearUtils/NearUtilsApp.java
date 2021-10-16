@@ -1,38 +1,28 @@
 package ru.ojaqua.NearUtils;
 
 import java.awt.SystemTray;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+
 import com.melloware.jintellitype.JIntellitype;
 
-import ru.ojaqua.NearUtils.Common.ClipboardWorker;
 import ru.ojaqua.NearUtils.Common.ExceptionHandler;
 import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.GUI.USystemTray;
-import ru.ojaqua.NearUtils.GUI.Menu.UMenu;
-import ru.ojaqua.NearUtils.GUI.Menu.UMenuItemParam;
-import ru.ojaqua.NearUtils.GUI.Menu.UMenuParam;
-import ru.ojaqua.NearUtils.Handlers.QueryGetterHandler.QueryGetterHandler;
-import ru.ojaqua.NearUtils.Handlers.SCRGetterHandler.SCRGetterHandler;
-import ru.ojaqua.NearUtils.Handlers.TmplStringHandler.TmplStringHandler;
-import ru.ojaqua.NearUtils.Param.NearUtilsParamReader;
+import ru.ojaqua.NearUtils.GUI.Menu.UMainMenu;
 
 /**
  * Hello world!
  *
  */
-//@ComponentScan("ru.ojaqua.NearUtils")
+@ComponentScan("ru.ojaqua.NearUtils")
 public class NearUtilsApp {
 	private static final int SHIFT_ALT_3 = 88;
-	private static final String nameProgram = "Near utils";
+	public static final String nameProgram = "Near utils";
 
 	static void prepareProgram() {
 		try {
@@ -70,40 +60,18 @@ public class NearUtilsApp {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
+			private ApplicationContext ctx;
+
 			public void run() {
 
 				try {
-					// ApplicationContext ctx = new
-					// AnnotationConfigApplicationContext(NearUtilsApp.class);
-					// ctx.getBean(null);
-
-					URI uri = NearUtilsApp.class.getResource("/NearUtilsParam.xml").toURI();
-					Path templStringParmPath = Paths.get(uri).toAbsolutePath();
-
-					NearUtilsParamReader tmplReader = new NearUtilsParamReader(templStringParmPath);
-
-					List<UMenuItemParam> tmplStringPrmList = tmplReader.getPrm().getStringHandlerPrm().getTmplStringList().stream()
-							.map(str -> UMenuItemParam.crExecuter(str, new TmplStringHandler(str, ClipboardWorker::setText)))
-							.collect(Collectors.toList());
-
-					List<UMenuItemParam> menuItems = List.of(
-							UMenuItemParam.crExecuter("Получить номера запросов",
-									new SCRGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)),
-							UMenuItemParam.crExecuter("Получить запрос из трассы",
-									new QueryGetterHandler(ClipboardWorker::getText, ClipboardWorker::setText)),
-							UMenuItemParam.crSubMenu("Шаблоны строк", new UMenuParam(SwingConstants.LEFT, tmplStringPrmList))
-
-					);
-
-					UMenu menu = new UMenu(new UMenuParam(menuItems), nameProgram);
-
-					@SuppressWarnings("unused")
-					USystemTray systemTray = new USystemTray(SystemTray.getSystemTray(), menu);
+					ctx = new AnnotationConfigApplicationContext(NearUtilsApp.class);
+					UMainMenu mainMenu = ctx.getBean(UMainMenu.class);
 
 					JIntellitype.getInstance().registerHotKey(SHIFT_ALT_3, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
 					JIntellitype.getInstance().addHotKeyListener(aIdentifier -> {
 						if (aIdentifier == SHIFT_ALT_3)
-							menu.show();
+							mainMenu.show();
 
 					});
 				} catch (Exception e) {

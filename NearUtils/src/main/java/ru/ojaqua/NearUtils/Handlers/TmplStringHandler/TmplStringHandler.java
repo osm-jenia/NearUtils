@@ -1,29 +1,35 @@
 package ru.ojaqua.NearUtils.Handlers.TmplStringHandler;
 
-import java.util.function.Consumer;
+import org.springframework.stereotype.Component;
+
+import ru.ojaqua.NearUtils.GUI.Menu.UTmplStringMenu;
+import ru.ojaqua.NearUtils.Handlers.IHandler;
 
 /**
- * Обработчик шаблонов строк По сути ничего со строкой не делает: просто
- * перекладывает из поставщика в потребитель
+ * Обработчик шаблонов строк
  * 
  * @author Aqua
  *
  */
-public class TmplStringHandler implements Runnable {
+@Component
+public class TmplStringHandler implements IHandler {
 
-	private Consumer<String> consumer;
-	private String outString;
+	private final UTmplStringMenu menu;
 
-	public TmplStringHandler(String outString, Consumer<String> consumer) {
+	public TmplStringHandler(UTmplStringMenu menu) {
 		super();
-		this.outString = outString;
-		this.consumer = consumer;
+		this.menu = menu;
+	}
+
+	@Override
+	public String getName() {
+		return "Шаблоны строк";
 	}
 
 	@Override
 	public void run() {
 
-		consumer.accept(outString);
+		menu.show();
 
 	}
 

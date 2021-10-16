@@ -14,16 +14,6 @@ public class UMenuItemParam {
 		return item;
 	}
 
-	public static UMenuItemParam crSubMenu(String itemName, UMenuParam submenu) {
-		UMenuItemParam item = new UMenuItemParam();
-
-		item.type = UMenuItemType.SubMenu;
-		item.itemName = itemName;
-		item.submenu = submenu;
-
-		return item;
-	}
-
 	public static UMenuItemParam crExecuter(String itemName, Runnable executer) {
 		UMenuItemParam item = new UMenuItemParam();
 
