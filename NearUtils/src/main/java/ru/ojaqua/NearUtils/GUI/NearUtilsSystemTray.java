@@ -16,16 +16,16 @@ import javax.swing.JOptionPane;
 
 import org.springframework.stereotype.Component;
 
-import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.GUI.Menu.UMainMenu;
+import ru.ojaqua.NearUtils.Common.NearUtilsError;
+import ru.ojaqua.NearUtils.GUI.Menu.MainMenu;
 
 @Component
-public class USystemTray {
+public class NearUtilsSystemTray {
 
-	final private UMainMenu mainMenu;
+	final private MainMenu mainMenu;
 	final private SystemTray tray;
 
-	public USystemTray(SystemTray tray, UMainMenu mainMenu) {
+	public NearUtilsSystemTray(SystemTray tray, MainMenu mainMenu) {
 		this.mainMenu = mainMenu;
 		this.tray = tray;
 	}
@@ -67,16 +67,16 @@ public class USystemTray {
 		try {
 			tray.add(trayIcon);
 		} catch (AWTException e) {
-			throw new UError("Возникли проблемы при добавлении иконки в трей", e);
+			throw new NearUtilsError("Возникли проблемы при добавлении иконки в трей", e);
 		}
 
 	}
 
 	protected Image createImage(String path, String description) {
-		URL imageURL = USystemTray.class.getResource(path);
+		URL imageURL = NearUtilsSystemTray.class.getResource(path);
 
 		if (imageURL == null) {
-			throw new UError("Не найден ресурс: " + path);
+			throw new NearUtilsError("Не найден ресурс: " + path);
 		}
 
 		return new ImageIcon(imageURL, description).getImage();

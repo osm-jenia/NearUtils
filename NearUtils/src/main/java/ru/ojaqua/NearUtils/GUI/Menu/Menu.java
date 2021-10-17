@@ -18,17 +18,17 @@ import javax.swing.JFrame;
 
 import ru.ojaqua.NearUtils.Common.ExceptionHandler;
 
-public class UMenu {
+public class Menu {
 	private List<JButton> buttons = new ArrayList<>();
 	private int currentFocus = 0;
 	private JFrame frame;
 
-	protected UMenu() {
+	protected Menu() {
 
 	}
 
-	public void init(UMenuParam menuParam, String nameProgram) {
-		List<UMenuItemParam> menuItems = menuParam.getMenuItems();
+	public void init(MenuParam menuParam, String nameProgram) {
+		List<MenuItemParam> menuItems = menuParam.getMenuItems();
 		frame = new JFrame(nameProgram);
 		frame.setLayout(new GridLayout(0, 1));
 		// frame.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
@@ -37,7 +37,7 @@ public class UMenu {
 		int curWidth = 0;
 		int curHeight = 0;
 
-		for (UMenuItemParam item : menuItems) {
+		for (MenuItemParam item : menuItems) {
 
 			JButton button = new JButton();
 			button.setBorderPainted(false);
@@ -74,7 +74,7 @@ public class UMenu {
 			button.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					frame.setVisible(false);
-					if (item.getType() == UMenuItemType.Executer) {
+					if (item.getType() == MenuItemType.Executer) {
 
 						try {
 
@@ -117,7 +117,7 @@ public class UMenu {
 					}
 					if (key == KeyEvent.VK_ENTER) {
 						frame.setVisible(false);
-						if (item.getType() == UMenuItemType.Executer) {
+						if (item.getType() == MenuItemType.Executer) {
 
 							try {
 

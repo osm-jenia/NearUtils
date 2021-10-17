@@ -8,8 +8,8 @@ public class ExceptionHandler {
 
 		System.err.println(java.time.LocalDateTime.now());
 
-		if (ex instanceof UError) {
-			System.err.println(((UError) ex).getAddInfoForTrace());
+		if (ex instanceof NearUtilsError) {
+			System.err.println(((NearUtilsError) ex).getAddInfoForTrace());
 		}
 
 		ex.printStackTrace();

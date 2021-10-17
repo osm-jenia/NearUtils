@@ -4,7 +4,7 @@ package ru.ojaqua.NearUtils.Handlers;
  * Общий интерфейс для всех обработчиков
  *
  */
-public interface IHandler extends Runnable {
+public interface Handler extends Runnable {
 
 	/**
 	 * Запустить на выполнение

@@ -1,5 +1,5 @@
 package ru.ojaqua.NearUtils.GUI.Menu;
 
-public enum UMenuItemType {
+public enum MenuItemType {
 	Separator, Executer
 };

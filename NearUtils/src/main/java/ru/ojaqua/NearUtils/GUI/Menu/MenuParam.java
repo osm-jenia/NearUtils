@@ -5,21 +5,21 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
-public class UMenuParam {
+public class MenuParam {
 
 	// Выравнивание строк в меню
 	// Констатнта из SwingConstants
 	final private int alignment;
 	// Пункты меню
-	final private List<UMenuItemParam> menuItems;
+	final private List<MenuItemParam> menuItems;
 
-	public UMenuParam(List<UMenuItemParam> menuItems) {
+	public MenuParam(List<MenuItemParam> menuItems) {
 		super();
 		this.alignment = SwingConstants.CENTER;
 		this.menuItems = menuItems;
 	}
 
-	public UMenuParam(int alignment, List<UMenuItemParam> menuItems) {
+	public MenuParam(int alignment, List<MenuItemParam> menuItems) {
 		super();
 		this.alignment = alignment;
 		this.menuItems = menuItems;
@@ -29,7 +29,7 @@ public class UMenuParam {
 		return alignment;
 	}
 
-	public List<UMenuItemParam> getMenuItems() {
+	public List<MenuItemParam> getMenuItems() {
 		return Collections.unmodifiableList(menuItems);
 	}
 

@@ -7,15 +7,15 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import ru.ojaqua.NearUtils.Common.IClipboardWorker;
-import ru.ojaqua.NearUtils.Handlers.IHandler;
+import ru.ojaqua.NearUtils.Common.ClipboardWorker;
+import ru.ojaqua.NearUtils.Handlers.Handler;
 
 @Component
-public class SCRGetterHandler implements IHandler {
+public class SCRGetterHandler implements Handler {
 
-	IClipboardWorker clipboard;
+	ClipboardWorker clipboard;
 
-	public SCRGetterHandler(IClipboardWorker clipboard) {
+	public SCRGetterHandler(ClipboardWorker clipboard) {
 
 		this.clipboard = clipboard;
 

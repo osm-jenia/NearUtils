@@ -2,8 +2,8 @@ package ru.ojaqua.NearUtils.Handlers.TmplStringHandler;
 
 import org.springframework.stereotype.Component;
 
-import ru.ojaqua.NearUtils.GUI.Menu.UTmplStringMenu;
-import ru.ojaqua.NearUtils.Handlers.IHandler;
+import ru.ojaqua.NearUtils.GUI.Menu.TmplStringMenu;
+import ru.ojaqua.NearUtils.Handlers.Handler;
 
 /**
  * Обработчик шаблонов строк
@@ -12,11 +12,11 @@ import ru.ojaqua.NearUtils.Handlers.IHandler;
  *
  */
 @Component
-public class TmplStringHandler implements IHandler {
+public class TmplStringHandler implements Handler {
 
-	private final UTmplStringMenu menu;
+	private final TmplStringMenu menu;
 
-	public TmplStringHandler(UTmplStringMenu menu) {
+	public TmplStringHandler(TmplStringMenu menu) {
 		super();
 		this.menu = menu;
 	}

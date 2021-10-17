@@ -9,17 +9,17 @@ import javax.swing.SwingConstants;
 import org.springframework.stereotype.Component;
 
 import ru.ojaqua.NearUtils.NearUtilsApp;
-import ru.ojaqua.NearUtils.Common.IClipboardWorker;
+import ru.ojaqua.NearUtils.Common.ClipboardWorker;
 import ru.ojaqua.NearUtils.Handlers.TmplStringHandler.TmplStringItemHandler;
 import ru.ojaqua.NearUtils.Param.NearUtilsParam;
 
 @Component
-public class UTmplStringMenu extends UMenu {
+public class TmplStringMenu extends Menu {
 
 	private final NearUtilsParam params;
-	private final IClipboardWorker clipboard;
+	private final ClipboardWorker clipboard;
 
-	public UTmplStringMenu(NearUtilsParam params, IClipboardWorker clipboard) {
+	public TmplStringMenu(NearUtilsParam params, ClipboardWorker clipboard) {
 		super();
 		this.params = params;
 		this.clipboard = clipboard;
@@ -28,10 +28,10 @@ public class UTmplStringMenu extends UMenu {
 	@PostConstruct
 	private void init() {
 
-		List<UMenuItemParam> tmplStringPrmList = params.getStringHandlerPrm().getTmplStringList().stream()
-				.map(str -> UMenuItemParam.crExecuter(str, new TmplStringItemHandler(clipboard, str))).collect(Collectors.toList());
+		List<MenuItemParam> tmplStringPrmList = params.getStringHandlerPrm().getTmplStringList().stream()
+				.map(str -> MenuItemParam.crExecuter(str, new TmplStringItemHandler(clipboard, str))).collect(Collectors.toList());
 
-		init(new UMenuParam(SwingConstants.LEFT, tmplStringPrmList), NearUtilsApp.nameProgram);
+		init(new MenuParam(SwingConstants.LEFT, tmplStringPrmList), NearUtilsApp.nameProgram);
 
 	}
 }

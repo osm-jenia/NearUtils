@@ -7,14 +7,14 @@ import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 
-import ru.ojaqua.NearUtils.Common.IClipboardWorker;
-import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.Handlers.IHandler;
+import ru.ojaqua.NearUtils.Common.ClipboardWorker;
+import ru.ojaqua.NearUtils.Common.NearUtilsError;
+import ru.ojaqua.NearUtils.Handlers.Handler;
 
 @Component
-public class QueryGetterHandler implements IHandler {
+public class QueryGetterHandler implements Handler {
 
-	IClipboardWorker clipboard;
+	ClipboardWorker clipboard;
 
 	/**
 	 * состояния конечного автомата, который используется при подстановке значений в
@@ -47,7 +47,7 @@ public class QueryGetterHandler implements IHandler {
 	static final String endQueryPatternStr = "^Result=\\s\\d+\\s{5}.*";
 	static final String threeSpacePatternStr = "(\\s{3})|$";
 
-	public QueryGetterHandler(IClipboardWorker clipboard) {
+	public QueryGetterHandler(ClipboardWorker clipboard) {
 		this.clipboard = clipboard;
 	}
 
@@ -193,7 +193,7 @@ public class QueryGetterHandler implements IHandler {
 						if (lines[j].substring(startPositionInLine).matches(endQueryPatternStr)) {
 
 							if (startQueryLineNumber == j) {
-								throw new UError("Неожиданный Result. Не нашел текст запроса");
+								throw new NearUtilsError("Неожиданный Result. Не нашел текст запроса");
 //							}else if (startQueryLineNumber + 3 >= j) { // Это ситуация неопределенности, так как позиция правого края запроса у нас не
 //																		// подтвердилась переносом строки
 //								if (strFinder.findLast()) // В этой ситуации вычисляем самый правый тройной пробел
@@ -264,7 +264,7 @@ public class QueryGetterHandler implements IHandler {
 					queryWithVar.append(c);
 				} else if (c == '?' && (varTypeQuery.equals(VarTypeQuery.UNDEF) || varTypeQuery.equals(VarTypeQuery.QUESTION_MARK))) {
 					if (vars.size() <= i)
-						throw new UError(
+						throw new NearUtilsError(
 								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
 								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: " + query + "\n"
 										+ "Запрос с подстановкой: " + queryWithVar.toString() + "\n" + "Массив значаений: " + vars.toString() + "\n"
@@ -295,7 +295,7 @@ public class QueryGetterHandler implements IHandler {
 				} else if (Character.isLetterOrDigit(c) || c == '_') {
 					state = State.COLON_VAR;
 					if (vars.size() <= i)
-						throw new UError(
+						throw new NearUtilsError(
 								"Количество переменых в массиве не соответствует количеству в запросе, в запросе мест для подстановок больше",
 								"Количество элементов в массиве: " + vars.size() + "\n" + "Запрос без параметров: " + query + "\n"
 										+ "Запрос с подстановкой: " + queryWithVar.toString() + "\n" + "Массив значаений: " + vars.toString() + "\n"

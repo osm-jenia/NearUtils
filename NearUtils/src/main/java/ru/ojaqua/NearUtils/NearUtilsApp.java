@@ -12,8 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import com.melloware.jintellitype.JIntellitype;
 
 import ru.ojaqua.NearUtils.Common.ExceptionHandler;
-import ru.ojaqua.NearUtils.Common.UError;
-import ru.ojaqua.NearUtils.GUI.Menu.UMainMenu;
+import ru.ojaqua.NearUtils.Common.NearUtilsError;
+import ru.ojaqua.NearUtils.GUI.Menu.MainMenu;
 
 /**
  * Hello world!
@@ -28,7 +28,7 @@ public class NearUtilsApp {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-			throw new UError("Ошибка при инициализации приложения", e);
+			throw new NearUtilsError("Ошибка при инициализации приложения", e);
 		}
 
 		// first check to see if an instance of this application is already
@@ -40,12 +40,12 @@ public class NearUtilsApp {
 		// next check to make sure JIntellitype DLL can be found and we are on
 		// a Windows operating System
 		if (!JIntellitype.isJIntellitypeSupported()) {
-			throw new UError("Пробемы при инициализации глобальной клавиши");
+			throw new NearUtilsError("Пробемы при инициализации глобальной клавиши");
 		}
 
 		// Check the SystemTray support
 		if (!SystemTray.isSupported()) {
-			throw new UError("Системный трей не поддерживается");
+			throw new NearUtilsError("Системный трей не поддерживается");
 		}
 
 	}
@@ -66,7 +66,7 @@ public class NearUtilsApp {
 
 				try {
 					ctx = new AnnotationConfigApplicationContext(NearUtilsApp.class);
-					UMainMenu mainMenu = ctx.getBean(UMainMenu.class);
+					MainMenu mainMenu = ctx.getBean(MainMenu.class);
 
 					JIntellitype.getInstance().registerHotKey(SHIFT_ALT_3, JIntellitype.MOD_ALT + JIntellitype.MOD_SHIFT, '3');
 					JIntellitype.getInstance().addHotKeyListener(aIdentifier -> {
