@@ -19,7 +19,7 @@ import ru.ojaqua.NearUtils.GUI.Menu.MainMenu;
  * Hello world!
  *
  */
-@ComponentScan("ru.ojaqua.NearUtils")
+@ComponentScan
 public class NearUtilsApp {
 	private static final int SHIFT_ALT_3 = 88;
 	public static final String nameProgram = "Near utils";
